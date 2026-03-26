@@ -2,7 +2,14 @@
   "permissions": {
     "allow": [
       "Bash(npm view:*)",
-      "Bash(npx olly-molly:*)"
+      "Bash(npx olly-molly:*)",
+      "Bash(python3 -c \"from PIL import Image; print\\(''PIL available''\\)\")",
+      "Bash(python3 -c \"import sys; print\\(sys.version\\)\")",
+      "Bash(python3 -c \"from PIL import Image, ImageDraw; print\\(''Pillow OK''\\)\")",
+      "Bash(python -c \"from PIL import Image; print\\(''PIL available''\\)\")",
+      "Bash(pip install:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)"
     ]
   }
 }
