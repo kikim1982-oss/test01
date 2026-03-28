@@ -1,0 +1,2343 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML + CSS + JS 공부</title>
+  <style>
+    /* ============================================ */
+    /* 1. 기본 선택자 (Selectors)                    */
+    /* ============================================ */
+
+    /* 태그 선택자 - 태그 이름으로 선택 */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 40px;
+      line-height: 1.8;
+      background-color: #fafafa;       /* 배경색 */
+      color: #333;                     /* 글자색 */
+    }
+
+    /* 태그 선택자 */
+    section {
+      margin-bottom: 40px;
+      border-bottom: 2px solid #e0e0e0;
+      padding-bottom: 20px;
+    }
+
+    /* 클래스 선택자 - .클래스명 (여러 요소에 재사용 가능) */
+    .section-title {
+      color: #fff;
+      background: linear-gradient(135deg, #667eea, #764ba2); /* 그라데이션 배경 */
+      padding: 12px 16px;
+      border-radius: 8px;             /* 모서리 둥글게 */
+      margin-bottom: 16px;
+      font-size: 1.3em;
+    }
+
+    /* ID 선택자 - #아이디명 (페이지에서 하나만) */
+    #page-header {
+      text-align: center;
+      padding: 30px;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: white;
+      border-radius: 12px;
+      margin-bottom: 40px;
+    }
+
+    /* 자손 선택자 - 안에 있는 모든 요소 */
+    #page-header p {
+      color: #ccc;
+      font-size: 1.1em;
+    }
+
+    /* 자식 선택자 - 바로 아래 자식만 */
+    .direct-child-demo > p {
+      border-left: 4px solid #667eea;
+      padding-left: 12px;
+    }
+
+    /* 그룹 선택자 - 여러 선택자에 같은 스타일 */
+    h3, h4 {
+      color: #444;
+    }
+
+
+    /* ============================================ */
+    /* 2. 색상과 배경 (Colors & Backgrounds)         */
+    /* ============================================ */
+
+    .color-hex { color: #e74c3c; }           /* HEX */
+    .color-rgb { color: rgb(46, 204, 113); } /* RGB */
+    .color-rgba { color: rgba(52, 152, 219, 0.7); } /* RGBA (투명도) */
+    .color-hsl { color: hsl(280, 60%, 50%); } /* HSL */
+    .color-name { color: tomato; }           /* 색상 이름 */
+
+    .bg-gradient {
+      background: linear-gradient(to right, #ff9a9e, #fad0c4, #fbc2eb);
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      color: #333;
+    }
+
+    .bg-radial {
+      background: radial-gradient(circle, #667eea, #764ba2);
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      color: white;
+    }
+
+
+    /* ============================================ */
+    /* 3. 텍스트 스타일 (Text)                       */
+    /* ============================================ */
+
+    .text-bold { font-weight: bold; }        /* 굵게 */
+    .text-italic { font-style: italic; }     /* 기울임 */
+    .text-underline { text-decoration: underline; }
+    .text-line-through { text-decoration: line-through; }
+    .text-uppercase { text-transform: uppercase; }  /* 대문자로 */
+    .text-lowercase { text-transform: lowercase; }  /* 소문자로 */
+    .text-capitalize { text-transform: capitalize; } /* 첫 글자 대문자 */
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .text-spacing { letter-spacing: 5px; }   /* 글자 간격 */
+    .text-word-spacing { word-spacing: 20px; } /* 단어 간격 */
+    .text-shadow { text-shadow: 2px 2px 4px rgba(0,0,0,0.3); } /* 글자 그림자 */
+    .text-large { font-size: 2em; }          /* em: 부모 기준 배수 */
+    .text-small { font-size: 0.8rem; }       /* rem: 루트(html) 기준 배수 */
+    .text-indent { text-indent: 40px; }      /* 들여쓰기 */
+    .text-line-height { line-height: 2.5; }  /* 줄 높이 */
+    .text-overflow-demo {
+      width: 200px;
+      white-space: nowrap;       /* 줄바꿈 금지 */
+      overflow: hidden;          /* 넘치면 숨김 */
+      text-overflow: ellipsis;   /* ... 표시 */
+      border: 1px solid #ccc;
+      padding: 8px;
+    }
+
+
+    /* ============================================ */
+    /* 4. 박스 모델 (Box Model)                      */
+    /* ============================================ */
+
+    .box-model-demo {
+      width: 300px;              /* 가로 너비 */
+      height: 100px;             /* 세로 높이 */
+      padding: 20px;             /* 안쪽 여백 */
+      border: 3px solid #667eea; /* 테두리 */
+      margin: 20px 0;            /* 바깥 여백 */
+      background-color: #e8f0fe;
+    }
+
+    /* padding 개별 설정 */
+    .padding-each {
+      padding-top: 10px;
+      padding-right: 20px;
+      padding-bottom: 30px;
+      padding-left: 40px;
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+    }
+
+    /* margin 단축 표기법 */
+    .margin-shorthand {
+      /* margin: 위 오른쪽 아래 왼쪽 (시계방향) */
+      margin: 10px 20px 30px 40px;
+      /* margin: 위아래 좌우 */
+      /* margin: 10px 20px; */
+      /* margin: 모두같음 */
+      /* margin: 10px; */
+      background: #d4edda;
+      padding: 10px;
+    }
+
+    /* box-sizing */
+    .box-sizing-demo {
+      width: 300px;
+      padding: 20px;
+      border: 5px solid #333;
+      box-sizing: border-box;  /* padding, border 포함해서 300px */
+      background: #e2e3f1;
+      margin: 10px 0;
+    }
+
+    /* 다양한 border 스타일 */
+    .border-solid { border: 3px solid #e74c3c; padding: 8px; margin: 5px 0; }
+    .border-dashed { border: 3px dashed #3498db; padding: 8px; margin: 5px 0; }
+    .border-dotted { border: 3px dotted #2ecc71; padding: 8px; margin: 5px 0; }
+    .border-double { border: 5px double #9b59b6; padding: 8px; margin: 5px 0; }
+    .border-mixed {
+      border-top: 3px solid red;
+      border-right: 3px dashed blue;
+      border-bottom: 3px dotted green;
+      border-left: 3px double purple;
+      padding: 8px;
+      margin: 5px 0;
+    }
+
+    /* border-radius */
+    .radius-small { border-radius: 8px; }
+    .radius-large { border-radius: 20px; }
+    .radius-circle {
+      width: 100px; height: 100px;
+      border-radius: 50%;        /* 원 만들기 */
+      background: #667eea;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: bold;
+    }
+
+    /* box-shadow */
+    .shadow-basic { box-shadow: 4px 4px 10px rgba(0,0,0,0.2); }
+    .shadow-inset { box-shadow: inset 4px 4px 10px rgba(0,0,0,0.2); }
+    .shadow-multi {
+      box-shadow:
+        4px 4px 10px rgba(0,0,0,0.1),
+        -4px -4px 10px rgba(0,0,0,0.05);
+    }
+
+
+    /* ============================================ */
+    /* 5. Display 속성                               */
+    /* ============================================ */
+
+    .display-block {
+      display: block;            /* 한 줄 전체 차지 */
+      background: #ffcdd2;
+      padding: 8px;
+      margin: 4px 0;
+    }
+    .display-inline {
+      display: inline;           /* 내용만큼만 차지, width/height 무시 */
+      background: #c8e6c9;
+      padding: 4px 8px;
+    }
+    .display-inline-block {
+      display: inline-block;     /* inline처럼 나란히 + width/height 가능 */
+      width: 120px;
+      height: 60px;
+      background: #bbdefb;
+      margin: 4px;
+      text-align: center;
+      line-height: 60px;
+    }
+    .display-none {
+      display: none;             /* 완전히 숨김 (공간도 사라짐) */
+    }
+    .visibility-hidden {
+      visibility: hidden;        /* 숨기지만 공간은 유지 */
+    }
+
+
+    /* ============================================ */
+    /* 6. Flexbox 레이아웃                            */
+    /* ============================================ */
+
+    .flex-container {
+      display: flex;             /* 플렉스 컨테이너 */
+      gap: 10px;                 /* 아이템 사이 간격 */
+      padding: 10px;
+      background: #f5f5f5;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+
+    .flex-item {
+      background: #667eea;
+      color: white;
+      padding: 20px;
+      border-radius: 6px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    /* flex-direction */
+    .flex-row { flex-direction: row; }           /* 가로 (기본값) */
+    .flex-column { flex-direction: column; }     /* 세로 */
+    .flex-row-reverse { flex-direction: row-reverse; } /* 가로 역순 */
+
+    /* justify-content: 주축 정렬 */
+    .flex-justify-center { justify-content: center; }
+    .flex-justify-between { justify-content: space-between; }
+    .flex-justify-around { justify-content: space-around; }
+    .flex-justify-evenly { justify-content: space-evenly; }
+
+    /* align-items: 교차축 정렬 */
+    .flex-align-center { align-items: center; }
+    .flex-align-stretch { align-items: stretch; }
+
+    /* flex-wrap */
+    .flex-wrap { flex-wrap: wrap; }              /* 줄바꿈 허용 */
+
+    /* 개별 아이템 속성 */
+    .flex-grow-1 { flex-grow: 1; }     /* 남은 공간 차지 */
+    .flex-grow-2 { flex-grow: 2; }     /* 2배 비율로 차지 */
+    .flex-shrink-0 { flex-shrink: 0; } /* 줄어들지 않음 */
+    .flex-basis-200 { flex-basis: 200px; } /* 기본 크기 */
+
+
+    /* ============================================ */
+    /* 7. Grid 레이아웃                               */
+    /* ============================================ */
+
+    .grid-container {
+      display: grid;
+      gap: 10px;
+      padding: 10px;
+      background: #f5f5f5;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+
+    .grid-item {
+      background: #764ba2;
+      color: white;
+      padding: 20px;
+      border-radius: 6px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    /* 3열 그리드 */
+    .grid-3col {
+      grid-template-columns: 1fr 1fr 1fr;  /* 동일 3등분 */
+    }
+
+    /* 다양한 열 크기 */
+    .grid-mixed {
+      grid-template-columns: 200px 1fr 2fr; /* 고정 + 비율 */
+    }
+
+    /* repeat 함수 */
+    .grid-repeat {
+      grid-template-columns: repeat(4, 1fr); /* 4등분 반복 */
+    }
+
+    /* auto-fill: 자동으로 열 채우기 */
+    .grid-auto {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+
+    /* 그리드 영역 이름 */
+    .grid-areas {
+      grid-template-areas:
+        "header header header"
+        "sidebar main main"
+        "footer footer footer";
+      grid-template-columns: 200px 1fr 1fr;
+      grid-template-rows: 60px 200px 60px;
+    }
+    .grid-header  { grid-area: header; background: #e74c3c; }
+    .grid-sidebar { grid-area: sidebar; background: #3498db; }
+    .grid-main    { grid-area: main; background: #2ecc71; }
+    .grid-footer  { grid-area: footer; background: #f39c12; }
+
+    /* span으로 여러 칸 차지 */
+    .grid-span-2col { grid-column: span 2; }
+    .grid-span-2row { grid-row: span 2; }
+
+
+    /* ============================================ */
+    /* 8. Position (위치 지정)                        */
+    /* ============================================ */
+
+    .pos-relative-container {
+      position: relative;        /* 기준점이 됨 */
+      width: 100%;
+      height: 200px;
+      background: #f0f0f0;
+      border: 2px solid #ccc;
+      margin: 10px 0;
+    }
+
+    .pos-absolute-box {
+      position: absolute;        /* 부모(relative) 기준으로 위치 */
+      top: 20px;
+      right: 20px;
+      width: 120px;
+      height: 60px;
+      background: #e74c3c;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+    }
+
+    .pos-absolute-box2 {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      width: 120px;
+      height: 60px;
+      background: #3498db;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+    }
+
+    .pos-sticky-demo {
+      position: sticky;          /* 스크롤 시 고정 */
+      top: 0;
+      background: #ffc107;
+      padding: 10px;
+      font-weight: bold;
+      z-index: 10;
+    }
+
+
+    /* ============================================ */
+    /* 9. 가상 클래스 & 가상 요소 (Pseudo)             */
+    /* ============================================ */
+
+    /* :hover - 마우스 올렸을 때 */
+    .hover-demo {
+      padding: 12px 24px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;  /* 부드러운 전환 효과 */
+    }
+    .hover-demo:hover {
+      background: #764ba2;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    /* :active - 클릭하는 순간 */
+    .hover-demo:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    /* :focus - 포커스 됐을 때 (탭 키 등) */
+    .focus-demo {
+      padding: 10px;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .focus-demo:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+    }
+
+    /* :nth-child - n번째 자식 */
+    .nth-demo li:nth-child(odd) {   /* 홀수 번째 */
+      background: #e8f0fe;
+    }
+    .nth-demo li:nth-child(even) {  /* 짝수 번째 */
+      background: #fff;
+    }
+    .nth-demo li:first-child {      /* 첫 번째 */
+      font-weight: bold;
+      color: #e74c3c;
+    }
+    .nth-demo li:last-child {       /* 마지막 */
+      font-weight: bold;
+      color: #3498db;
+    }
+    .nth-demo li {
+      padding: 8px 16px;
+      list-style: none;
+    }
+
+    /* ::before, ::after - 가상 요소 */
+    .before-after-demo {
+      position: relative;
+      padding: 12px 20px;
+      padding-left: 30px;
+    }
+    .before-after-demo::before {
+      content: ">> ";              /* 앞에 내용 추가 */
+      color: #e74c3c;
+      font-weight: bold;
+    }
+    .before-after-demo::after {
+      content: " <<";              /* 뒤에 내용 추가 */
+      color: #3498db;
+      font-weight: bold;
+    }
+
+    /* ::first-letter, ::first-line */
+    .first-letter-demo::first-letter {
+      font-size: 2.5em;
+      color: #e74c3c;
+      float: left;
+      margin-right: 8px;
+      line-height: 1;
+    }
+
+
+    /* ============================================ */
+    /* 10. 트랜지션 & 애니메이션 (Transition & Animation) */
+    /* ============================================ */
+
+    /* transition: 상태 변화에 부드러운 전환 */
+    .transition-demo {
+      width: 200px;
+      height: 60px;
+      background: #667eea;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      margin: 10px 0;
+      /* transition: 속성 시간 타이밍 지연 */
+      transition: all 0.5s ease;
+    }
+    .transition-demo:hover {
+      width: 400px;
+      background: #e74c3c;
+      border-radius: 30px;
+    }
+
+    /* @keyframes 애니메이션 정의 */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes colorChange {
+      0% { background-color: #e74c3c; }
+      25% { background-color: #f39c12; }
+      50% { background-color: #2ecc71; }
+      75% { background-color: #3498db; }
+      100% { background-color: #e74c3c; }
+    }
+
+    .animate-bounce {
+      display: inline-block;
+      width: 60px; height: 60px;
+      background: #667eea;
+      border-radius: 50%;
+      /* animation: 이름 시간 타이밍 반복 */
+      animation: bounce 1s ease-in-out infinite;
+    }
+
+    .animate-spin {
+      display: inline-block;
+      width: 60px; height: 60px;
+      background: #e74c3c;
+      border-radius: 8px;
+      animation: spin 2s linear infinite;
+      margin: 0 20px;
+    }
+
+    .animate-color {
+      display: inline-block;
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      animation: colorChange 3s ease infinite;
+    }
+
+
+    /* ============================================ */
+    /* 11. Transform (변환)                          */
+    /* ============================================ */
+
+    .transform-box {
+      display: inline-block;
+      width: 80px; height: 80px;
+      background: #764ba2;
+      color: white;
+      margin: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8em;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    .transform-rotate:hover { transform: rotate(45deg); }
+    .transform-scale:hover { transform: scale(1.5); }
+    .transform-skew:hover { transform: skew(15deg, 5deg); }
+    .transform-translate:hover { transform: translate(20px, -10px); }
+    .transform-all:hover {
+      transform: rotate(10deg) scale(1.2) translateX(10px);
+    }
+
+
+    /* ============================================ */
+    /* 12. 반응형 디자인 (Media Query)                 */
+    /* ============================================ */
+
+    .responsive-box {
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+      font-weight: bold;
+      border-radius: 8px;
+      margin: 10px 0;
+      background: #2ecc71;
+      color: white;
+    }
+
+    /* 화면 너비가 768px 이하일 때 */
+    @media (max-width: 768px) {
+      .responsive-box {
+        background: #e74c3c;
+      }
+      .responsive-box::after {
+        content: " (모바일 크기!)";
+      }
+      .grid-3col {
+        grid-template-columns: 1fr; /* 1열로 변경 */
+      }
+    }
+
+    /* 화면 너비가 1200px 이상일 때 */
+    @media (min-width: 1200px) {
+      .responsive-box {
+        background: #3498db;
+      }
+      .responsive-box::after {
+        content: " (큰 화면!)";
+      }
+    }
+
+
+    /* ============================================ */
+    /* 13. Opacity & Filter                         */
+    /* ============================================ */
+
+    .opacity-100 { opacity: 1.0; }
+    .opacity-70 { opacity: 0.7; }
+    .opacity-40 { opacity: 0.4; }
+    .opacity-10 { opacity: 0.1; }
+
+    .filter-blur { filter: blur(3px); }
+    .filter-grayscale { filter: grayscale(100%); }
+    .filter-brightness { filter: brightness(1.5); }
+    .filter-demo {
+      display: inline-block;
+      margin: 5px;
+      transition: filter 0.3s;
+    }
+    .filter-demo:hover {
+      filter: none;    /* 마우스 올리면 필터 제거 */
+    }
+
+
+    /* ============================================ */
+    /* 14. Overflow (넘침 처리)                       */
+    /* ============================================ */
+
+    .overflow-demo {
+      width: 200px;
+      height: 80px;
+      border: 2px solid #667eea;
+      margin: 10px;
+      display: inline-block;
+      vertical-align: top;
+      padding: 8px;
+      font-size: 0.85em;
+    }
+    .overflow-visible { overflow: visible; }  /* 넘쳐서 보임 (기본) */
+    .overflow-hidden { overflow: hidden; }    /* 넘치면 숨김 */
+    .overflow-scroll { overflow: scroll; }    /* 항상 스크롤바 */
+    .overflow-auto { overflow: auto; }        /* 넘칠 때만 스크롤 */
+
+
+    /* ============================================ */
+    /* 15. 변수 (CSS Custom Properties)              */
+    /* ============================================ */
+
+    :root {
+      --primary: #667eea;        /* CSS 변수 선언 */
+      --secondary: #764ba2;
+      --danger: #e74c3c;
+      --success: #2ecc71;
+      --radius: 8px;
+      --shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .var-demo-1 {
+      background: var(--primary);  /* 변수 사용 */
+      color: white;
+      padding: 12px;
+      border-radius: var(--radius);
+      margin: 5px 0;
+    }
+    .var-demo-2 {
+      background: var(--secondary);
+      color: white;
+      padding: 12px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin: 5px 0;
+    }
+    .var-demo-3 {
+      border: 2px solid var(--danger);
+      color: var(--danger);
+      padding: 12px;
+      border-radius: var(--radius);
+      margin: 5px 0;
+    }
+
+
+    /* ============================================ */
+    /* 기존 HTML 섹션 스타일 유지                      */
+    /* ============================================ */
+
+    table, th, td {
+      border: 1px solid #999;
+      border-collapse: collapse;
+      padding: 8px;
+    }
+    code {
+      background: #eee;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Consolas', monospace;
+    }
+
+    /* ============================================ */
+    /* JS 예시용 스타일                               */
+    /* ============================================ */
+
+    .js-section-title {
+      color: #fff;
+      background: linear-gradient(135deg, #f39c12, #e74c3c);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 1.3em;
+    }
+
+    .js-btn {
+      padding: 10px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: bold;
+      color: white;
+      margin: 5px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .js-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .js-btn:active { transform: translateY(0); box-shadow: none; }
+    .js-btn-blue { background: #3498db; }
+    .js-btn-red { background: #e74c3c; }
+    .js-btn-green { background: #2ecc71; }
+    .js-btn-purple { background: #9b59b6; }
+    .js-btn-orange { background: #f39c12; }
+    .js-btn-dark { background: #2c3e50; }
+
+    .js-output {
+      background: #1e1e1e;
+      color: #0f0;
+      padding: 16px;
+      border-radius: 8px;
+      font-family: 'Consolas', monospace;
+      min-height: 40px;
+      margin: 10px 0;
+      white-space: pre-wrap;
+    }
+
+    /* 파티클 캔버스 */
+    #particle-canvas {
+      border: 2px solid #667eea;
+      border-radius: 8px;
+      cursor: crosshair;
+      display: block;
+      margin: 10px 0;
+    }
+
+    /* 공 튀기기 */
+    #bounce-canvas {
+      border: 2px solid #e74c3c;
+      border-radius: 8px;
+      display: block;
+      margin: 10px 0;
+      background: #1a1a2e;
+    }
+
+    /* 투두 리스트 */
+    .todo-input-wrap {
+      display: flex;
+      gap: 8px;
+      margin: 10px 0;
+    }
+    .todo-input-wrap input {
+      flex: 1;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 1em;
+    }
+    .todo-list {
+      list-style: none;
+      padding: 0;
+    }
+    .todo-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-bottom: 1px solid #eee;
+      transition: all 0.3s;
+    }
+    .todo-list li.done {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+    .todo-list li button {
+      margin-left: auto;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 10px;
+      cursor: pointer;
+    }
+
+    /* 타이머 */
+    .timer-display {
+      font-size: 4em;
+      font-weight: bold;
+      text-align: center;
+      font-family: 'Consolas', monospace;
+      color: #2c3e50;
+      margin: 10px 0;
+    }
+
+    /* 색상 박스 */
+    .color-change-box {
+      width: 200px;
+      height: 200px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2em;
+      transition: all 0.5s ease;
+      cursor: pointer;
+      margin: 10px 0;
+    }
+
+    /* 드래그 박스 */
+    .drag-area {
+      width: 100%;
+      height: 300px;
+      background: #f5f5f5;
+      border: 2px dashed #ccc;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+    .drag-box {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 12px;
+      position: absolute;
+      top: 50px;
+      left: 50px;
+      cursor: grab;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 0.8em;
+      user-select: none;
+    }
+    .drag-box:active { cursor: grabbing; }
+
+    /* 카운터 */
+    .counter-display {
+      font-size: 5em;
+      font-weight: bold;
+      text-align: center;
+      color: #667eea;
+      margin: 10px 0;
+      transition: transform 0.2s;
+    }
+    .counter-display.pop {
+      transform: scale(1.3);
+    }
+
+    /* 타이핑 효과 */
+    .typing-text {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #2c3e50;
+      border-right: 3px solid #667eea;
+      padding-right: 5px;
+      min-height: 1.8em;
+    }
+
+    /* 스크롤 진행률 바 */
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(to right, #667eea, #e74c3c);
+      z-index: 9999;
+      transition: width 0.1s;
+    }
+
+    /* 다크모드 토글 */
+    body.dark-mode {
+      background-color: #1a1a2e;
+      color: #e0e0e0;
+    }
+    body.dark-mode section {
+      border-bottom-color: #333;
+    }
+    body.dark-mode .section-title,
+    body.dark-mode .js-section-title {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .js-output {
+      border: 1px solid #333;
+    }
+
+    /* 마우스 따라다니는 원 */
+    #mouse-follower {
+      width: 30px;
+      height: 30px;
+      background: rgba(102, 126, 234, 0.5);
+      border: 2px solid #667eea;
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.15s ease-out;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ================================ -->
+<!-- CSS 1. 선택자 (Selectors) -->
+<!-- ================================ -->
+<div id="page-header">
+  <h1>HTML + CSS 공부 페이지</h1>
+  <p>이 헤더는 #page-header (ID 선택자)로 스타일링되었습니다</p>
+</div>
+
+<section>
+  <h2 class="section-title">CSS 1. 선택자 (Selectors)</h2>
+  <p><code>태그 선택자</code>: <code>p { }</code> - 모든 p 태그에 적용</p>
+  <p><code>.클래스 선택자</code>: <code>.section-title { }</code> - 위의 보라색 제목처럼</p>
+  <p><code>#ID 선택자</code>: <code>#page-header { }</code> - 위의 어두운 헤더처럼</p>
+
+  <h3>자식 선택자 vs 자손 선택자</h3>
+  <div class="direct-child-demo">
+    <p>이 p는 직계 자식이라 왼쪽에 파란 줄이 있습니다 (> 선택자)</p>
+    <div>
+      <p>이 p는 손자라서 파란 줄이 없습니다</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================================ -->
+<!-- CSS 2. 색상과 배경 -->
+<!-- ================================ -->
+<section>
+  <h2 class="section-title">CSS 2. 색상과 배경</h2>
+  <p class="color-hex">HEX: color: #e74c3c</p>
+  <p class="color-rgb">RGB: color: rgb(46, 204, 113)</p>
+  <p class="color-rgba">RGBA: color: rgba(52, 152, 219, 0.7) - 투명도 포함</p>
+  <p class="color-hsl">HSL: color: hsl(280, 60%, 50%)</p>
+  <p class="color-name">이름: color: tomato</p>
+
+  <h3>그라데이션 배경</h3>
+  <div class="bg-gradient">linear-gradient (선형 그라데이션)</div>
+  <br>
+  <div class="bg-radial">radial-gradient (원형 그라데이션)</div>
+</section>
+
+<!-- ================================ -->
+<!-- CSS 3. 텍스트 스타일 -->
+<!-- ================================ -->
+<section>
+  <h2 class="section-title">CSS 3. 텍스트 스타일</h2>
+  <p class="text-bold">font-weight: bold - 굵은 글씨</p>
+  <p class="text-italic">font-style: italic - 기울임 글씨</p>
+  <p class="text-underline">text-decoration: underline - 밑줄</p>
+  <p class="text-line-through">text-decoration: line-through - 취소선</p>
+  <p class="text-uppercase">text-transform: uppercase - 대문자로 변환</p>
+  <p class="text-capitalize">text-transform: capitalize - 첫 글자만 대문자</p>
+  <p class="text-spacing">letter-spacing: 5px - 글 자 간 격</p>
+  <p class="text-shadow">text-shadow - 글자 그림자 효과</p>
+  <p class="text-large">font-size: 2em (큰 글씨)</p>
+  <p class="text-indent">text-indent: 40px - 첫 줄 들여쓰기가 적용된 문단입니다. 이렇게 긴 텍스트의 첫 줄만 들여쓰기됩니다.</p>
+
+  <h3>텍스트 말줄임 (...)</h3>
+  <div class="text-overflow-demo">이 텍스트는 너무 길어서 말줄임표가 표시됩니다 overflow ellipsis</div>
+
+  <h3>::first-letter 가상 요소</h3>
+  <p class="first-letter-demo">첫 글자만 크게 만들 수 있습니다. 신문이나 책에서 자주 보이는 스타일이죠. CSS의 가상 요소를 사용합니다.</p>
+</section>
+
+<!-- ================================ -->
+<!-- CSS 4. 박스 모델 -->
+<!-- ================================ -->
+<section>
+  <h2 class="section-title">CSS 4. 박스 모델 (Box Model)</h2>
+  <p>모든 HTML 요소는 <strong>content + padding + border + margin</strong>으로 구성됩니다.</p>
+
+  <div class="box-model-demo">
+    width:300px / padding:20px / border:3px / margin:20px
+  </div>
+
+  <div class="box-sizing-demo">
+    box-sizing: border-box (padding+border 포함 300px)
+  </div>
+
+  <h3>다양한 border 스타일</h3>
+  <div class="border-solid">solid (실선)</div>
+  <div class="border-dashed">dashed (파선)</div>
+  <div class="border-dotted">dotted (점선)</div>
+  <div class="border-double">double (이중선)</div>
+  <div class="border-mixed">각 면마다 다른 스타일</div>
+
+  <h3>border-radius (모서리 둥글게)</h3>
+  <div style="display: flex; gap: 20px; align-items: center; margin: 10px 0;">
+    <div class="border-solid radius-small">8px</div>
+    <div class="border-solid radius-large">20px</div>
+    <div class="radius-circle">50% = 원</div>
+  </div>
+
+  <h3>box-shadow (그림자)</h3>
+  <div style="display: flex; gap: 20px; margin: 20px 0;">
+    <div style="width:150px; height:80px; background:white; display:flex; align-items:center; justify-content:center;" class="shadow-basic">기본 그림자</div>
+    <div style="width:150px; height:80px; background:white; display:flex; align-items:center; justify-content:center;" class="shadow-inset">안쪽 그림자</div>
+    <div style="width:150px; height:80px; background:white; display:flex; align-items:center; justify-content:center;" class="shadow-multi">다중 그림자</div>
+  </div>
+</section>
+
+<!-- ================================ -->
+<!-- CSS 5. Display -->
+<!-- ================================ -->
+<section>
+  <h2 class="section-title">CSS 5. Display 속성</h2>
+
+  <h3>block vs inline vs inline-block</h3>
+  <div class="display-block">display: block (한 줄 전체 차지)</div>
+  <div class="display-block">display: block (다음 줄로)</div>
+
+  <p>
+    <span class="display-inline">inline 1</span>
+    <span class="display-inline">inline 2</span>
+    <span class="display-inline">inline 3 (나란히 배치, width 설정 불가)</span>
+  </p>
+
+  <div>
+    <span class="display-inline-block">inline-block 1</span>
+    <span class="display-inline-block">inline-block 2</span>
+    <span class="display-inline-block">inline-block 3</span>
+  </div>
+
+  <h3>none vs visibility: hidden</h3>
+  <p>여기 3개 박스: <span style="background:#c8e6c9; padding:4px 8px;">보이는 1</span> <span class="display-none">숨겨진(none)</span> <span style="background:#c8e6c9; padding:4px 8px;">보이는 2</span> (none: 공간도 사라짐)</p>
+  <p>여기 3개 박스: <span style="background:#c8e6c9; padding:4px 8px;">보이는 1</span> <span class="visibility-hidden" style="background:#c8e6c9; padding:4px 8px;">숨겨진</span> <span style="background:#c8e6c9; padding:4px 8px;">보이는 2</span> (hidden: 공간은 유지)</p>
+</section>
+
+<!-- ================================ -->
+<!-- CSS 6. Flexbox -->
+<!-- ================================ -->
+<section>
+  <h2 class="section-title">CSS 6. Flexbox 레이아웃</h2>
+
+  <h3>기본 flex (가로 배치)</h3>
+  <div class="flex-container flex-row">
+    <div class="flex-item">1</div>
+    <div class="flex-item">2</div>
+    <div class="flex-item">3</div>
+  </div>
+
+  <h3>flex-direction: column (세로 배치)</h3>
+  <div class="flex-container flex-column" style="height: 200px;">
+    <div class="flex-item">1</div>
+    <div class="flex-item">2</div>
+    <div class="flex-item">3</div>
+  </div>
+
+  <h3>justify-content: space-between</h3>
+  <div class="flex-container flex-justify-between">
+    <div class="flex-item">1</div>
+    <div class="flex-item">2</div>
+    <div class="flex-item">3</div>
+  </div>
+
+  <h3>justify-content: center + align-items: center (가운데 정렬)</h3>
+  <div class="flex-container flex-justify-center flex-align-center" style="height: 150px;">
+    <div class="flex-item">완벽한 가운데!</div>
+  </div>
+
+  <h3>flex-grow (남은 공간 비율 분배)</h3>
+  <div class="flex-container">
+    <div class="flex-item flex-grow-1">grow: 1</div>
+    <div class="flex-item flex-grow-2">grow: 2 (2배)</div>
+    <div class="flex-item flex-grow-1">grow: 1</div>
+  </div>
+
+  <h3>flex-wrap (줄바꿈)</h3>
+  <div class="flex-container flex-wrap">
+    <div class="flex-item flex-basis-200">200px</div>
+    <div class="flex-item flex-basis-200">200px</div>
+    <div class="flex-item flex-basis-200">200px</div>
+    <div class="flex-item flex-basis-200">200px</div>
+    <div class="flex-item flex-basis-200">200px</div>
+  </div>
+</section>
+
+<!-- ================================ -->
+<!-- CSS 7. Grid -->
+<!-- ================================ -->
+<section>
+  <h2 class="section-title">CSS 7. Grid 레이아웃</h2>
+
+  <h3>3열 균등 분할</h3>
+  <div class="grid-container grid-3col">
+    <div class="grid-item">1</div>
+    <div class="grid-item">2</div>
+    <div class="grid-item">3</div>
+    <div class="grid-item">4</div>
+    <div class="grid-item">5</div>
+    <div class="grid-item">6</div>
+  </div>
+
+  <h3>grid-template-areas (영역 이름으로 배치)</h3>
+  <div class="grid-container grid-areas">
+    <div class="grid-item grid-header">Header</div>
+    <div class="grid-item grid-sidebar">Sidebar</div>
+    <div class="grid-item grid-main">Main</div>
+    <div class="grid-item grid-footer">Footer</div>
+  </div>
+
+  <h3>auto-fill + minmax (반응형 그리드)</h3>
+  <div class="grid-container grid-auto">
+    <div class="grid-item">1</div>
+    <div class="grid-item">2</div>
+    <div class="grid-item">3</div>
+    <div class="grid-item">4</div>
+    <div class="grid-item">5</div>
+    <div class="grid-item">6</div>
+  </div>
+</section>
+
+<!-- ================================ -->
+<!-- CSS 8. Position -->
+<!-- ================================ -->
+<section>
+  <h2 class="section-title">CSS 8. Position (위치)</h2>
+  <p><code>static</code>: 기본값 / <code>relative</code>: 원래 위치 기준 / <code>absolute</code>: 부모(relative) 기준 / <code>fixed</code>: 화면 기준 / <code>sticky</code>: 스크롤 시 고정</p>
+
+  <div class="pos-relative-container">
+    <span style="padding:10px;">이 div는 position: relative (기준점)</span>
+    <div class="pos-absolute-box">absolute<br>top:20 right:20</div>
+    <div class="pos-absolute-box2">absolute<br>bottom:20 left:20</div>
+  </div>
+</section>
+
+<!-- ================================ -->
+<!-- CSS 9. 가상 클래스 & 가상 요소 -->
+<!-- ================================ -->
+<section>
+  <h2 class="section-title">CSS 9. 가상 클래스 & 가상 요소</h2>
+
+  <h3>:hover / :active (마우스 올려보세요)</h3>
+  <button class="hover-demo">마우스를 올려보세요!</button>
+
+  <h3>:focus (클릭하거나 Tab 키로 포커스)</h3>
+  <input type="text" class="focus-demo" placeholder="클릭해서 포커스해보세요">
+
+  <h3>:nth-child (n번째 자식 선택)</h3>
+  <ul class="nth-demo">
+    <li>1번 - :first-child (빨간 굵은 글씨)</li>
+    <li>2번 - :nth-child(even) (흰 배경)</li>
+    <li>3번 - :nth-child(odd) (파란 배경)</li>
+    <li>4번 - :nth-child(even)</li>
+    <li>5번 - :nth-child(odd)</li>
+    <li>6번 - :last-child (파란 굵은 글씨)</li>
+  </ul>
+
+  <h3>::before / ::after (가상 요소)</h3>
+  <p class="before-after-demo">이 텍스트 앞뒤에 가상 요소가 추가됩니다</p>
+</section>
+
+<!-- ================================ -->
+<!-- CSS 10. 트랜지션 & 애니메이션 -->
+<!-- ================================ -->
+<section>
+  <h2 class="section-title">CSS 10. 트랜지션 & 애니메이션</h2>
+
+  <h3>transition (마우스 올려보세요)</h3>
+  <div class="transition-demo">너비가 변합니다</div>
+
+  <h3>@keyframes animation</h3>
+  <div style="display: flex; align-items: center; gap: 40px; margin: 20px 0;">
+    <div>
+      <div class="animate-bounce"></div>
+      <p>bounce</p>
+    </div>
+    <div>
+      <div class="animate-spin"></div>
+      <p>spin</p>
+    </div>
+    <div>
+      <div class="animate-color"></div>
+      <p>colorChange</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================================ -->
+<!-- CSS 11. Transform -->
+<!-- ================================ -->
+<section>
+  <h2 class="section-title">CSS 11. Transform (마우스 올려보세요)</h2>
+  <div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0;">
+    <div class="transform-box transform-rotate">rotate<br>45deg</div>
+    <div class="transform-box transform-scale">scale<br>1.5</div>
+    <div class="transform-box transform-skew">skew<br>15deg</div>
+    <div class="transform-box transform-translate">translate<br>20px</div>
+    <div class="transform-box transform-all">복합<br>변환</div>
+  </div>
+</section>
+
+<!-- ================================ -->
+<!-- CSS 12. 반응형 (Media Query) -->
+<!-- ================================ -->
+<section>
+  <h2 class="section-title">CSS 12. 반응형 디자인 (Media Query)</h2>
+  <p>브라우저 창 크기를 줄여보세요!</p>
+  <div class="responsive-box">
+    현재 화면 크기에 따라 색이 바뀝니다
+  </div>
+  <p><code>@media (max-width: 768px)</code> : 768px 이하에서 빨간색</p>
+  <p><code>@media (min-width: 1200px)</code> : 1200px 이상에서 파란색</p>
+</section>
+
+<!-- ================================ -->
+<!-- CSS 13. Opacity & Filter -->
+<!-- ================================ -->
+<section>
+  <h2 class="section-title">CSS 13. Opacity & Filter</h2>
+
+  <h3>opacity (투명도)</h3>
+  <div style="display: flex; gap: 10px;">
+    <div class="opacity-100" style="background:#667eea; padding:15px; color:white;">1.0</div>
+    <div class="opacity-70" style="background:#667eea; padding:15px; color:white;">0.7</div>
+    <div class="opacity-40" style="background:#667eea; padding:15px; color:white;">0.4</div>
+    <div class="opacity-10" style="background:#667eea; padding:15px; color:white;">0.1</div>
+  </div>
+
+  <h3>filter (마우스 올리면 원본)</h3>
+  <div style="display: flex; gap: 10px; margin: 10px 0;">
+    <div class="filter-demo filter-blur" style="background:#e74c3c; padding:20px; color:white;">blur</div>
+    <div class="filter-demo filter-grayscale" style="background:#2ecc71; padding:20px; color:white;">grayscale</div>
+    <div class="filter-demo filter-brightness" style="background:#3498db; padding:20px; color:white;">brightness</div>
+  </div>
+</section>
+
+<!-- ================================ -->
+<!-- CSS 14. Overflow -->
+<!-- ================================ -->
+<section>
+  <h2 class="section-title">CSS 14. Overflow (넘침 처리)</h2>
+  <div style="display: flex; flex-wrap: wrap;">
+    <div class="overflow-demo overflow-visible">
+      <strong>visible</strong><br>넘쳐도 그대로 보입니다. 텍스트가 박스를 넘어갑니다.
+    </div>
+    <div class="overflow-demo overflow-hidden">
+      <strong>hidden</strong><br>넘치는 부분이 잘려서 안 보입니다. 숨겨진 텍스트.
+    </div>
+    <div class="overflow-demo overflow-scroll">
+      <strong>scroll</strong><br>항상 스크롤바가 표시됩니다. 내용이 넘치지 않아도요.
+    </div>
+    <div class="overflow-demo overflow-auto">
+      <strong>auto</strong><br>넘칠 때만 스크롤바가 나타납니다. 가장 많이 사용합니다.
+    </div>
+  </div>
+</section>
+
+<!-- ================================ -->
+<!-- CSS 15. CSS 변수 -->
+<!-- ================================ -->
+<section>
+  <h2 class="section-title">CSS 15. CSS 변수 (Custom Properties)</h2>
+  <p><code>:root</code>에서 <code>--변수명: 값</code>으로 선언하고, <code>var(--변수명)</code>으로 사용합니다.</p>
+  <div class="var-demo-1">background: var(--primary) = #667eea</div>
+  <div class="var-demo-2">background: var(--secondary) + box-shadow: var(--shadow)</div>
+  <div class="var-demo-3">border-color: var(--danger) + color: var(--danger)</div>
+  <p>변수를 쓰면 색상이나 값을 한 곳에서 관리할 수 있어 유지보수가 편합니다!</p>
+</section>
+
+<hr style="border: 3px solid #667eea; margin: 60px 0 40px;">
+<h1 style="text-align: center; color: #667eea;">아래는 HTML 태그 예시</h1>
+<hr style="border: 3px solid #667eea; margin: 40px 0 60px;">
+
+<!-- ================================ -->
+<!-- 1. 제목 태그 (h1 ~ h6) -->
+<!-- ================================ -->
+<section>
+  <h2>1. 제목 태그</h2>
+  <h1>h1 - 가장 큰 제목</h1>
+  <h2>h2 - 두 번째 제목</h2>
+  <h3>h3 - 세 번째 제목</h3>
+  <h4>h4 - 네 번째 제목</h4>
+  <h5>h5 - 다섯 번째 제목</h5>
+  <h6>h6 - 가장 작은 제목</h6>
+</section>
+
+<!-- ================================ -->
+<!-- 2. 텍스트 관련 태그 -->
+<!-- ================================ -->
+<section>
+  <h2>2. 텍스트 관련 태그</h2>
+  <p>이것은 <strong>굵은 글씨(strong)</strong>입니다.</p>
+  <p>이것은 <b>굵은 글씨(b)</b>입니다. (strong과 비슷하지만 의미 없이 굵게만)</p>
+  <p>이것은 <em>기울임(em)</em>입니다.</p>
+  <p>이것은 <i>기울임(i)</i>입니다. (em과 비슷하지만 의미 없이 기울임만)</p>
+  <p>이것은 <u>밑줄(u)</u>입니다.</p>
+  <p>이것은 <s>취소선(s)</s>입니다.</p>
+  <p>이것은 <del>삭제된 텍스트(del)</del>이고, 이것은 <ins>추가된 텍스트(ins)</ins>입니다.</p>
+  <p>이것은 <mark>형광펜 효과(mark)</mark>입니다.</p>
+  <p>이것은 <small>작은 글씨(small)</small>입니다.</p>
+  <p>H<sub>2</sub>O는 아래첨자(sub), E=mc<sup>2</sup>는 위첨자(sup)입니다.</p>
+  <p><code>code</code> 태그는 코드를 표시할 때 씁니다.</p>
+  <p><abbr title="HyperText Markup Language">HTML</abbr>은 약어(abbr) 태그입니다. (마우스 올려보세요)</p>
+  <p><q>q 태그는 짧은 인용문</q>을 표시합니다.</p>
+  <blockquote>
+    blockquote 태그는 긴 인용문을 표시할 때 사용합니다.
+    들여쓰기가 자동으로 됩니다.
+  </blockquote>
+  <pre>
+pre 태그는
+  작성한 그대로
+    공백과 줄바꿈이
+      유지됩니다.
+  </pre>
+</section>
+
+<!-- ================================ -->
+<!-- 3. 링크와 이미지 -->
+<!-- ================================ -->
+<section>
+  <h2>3. 링크와 이미지</h2>
+  <p><a href="https://www.naver.com">네이버로 이동</a></p>
+  <p><a href="https://www.google.com" target="_blank">구글 (새 탭에서 열기)</a></p>
+  <p><a href="#footer">페이지 하단으로 이동 (앵커 링크)</a></p>
+  <p><a href="mailto:test@example.com">이메일 보내기</a></p>
+
+  <!-- 이미지 (src에 실제 이미지 URL을 넣으세요) -->
+  <img src="https://via.placeholder.com/300x150" alt="예시 이미지" width="300" height="150">
+  <p><code>alt</code> 속성은 이미지를 설명하는 대체 텍스트입니다.</p>
+</section>
+
+<!-- ================================ -->
+<!-- 4. 목록 태그 -->
+<!-- ================================ -->
+<section>
+  <h2>4. 목록 태그</h2>
+
+  <h3>순서 없는 목록 (ul)</h3>
+  <ul>
+    <li>사과</li>
+    <li>바나나</li>
+    <li>딸기</li>
+  </ul>
+
+  <h3>순서 있는 목록 (ol)</h3>
+  <ol>
+    <li>첫 번째</li>
+    <li>두 번째</li>
+    <li>세 번째</li>
+  </ol>
+
+  <h3>중첩 목록</h3>
+  <ul>
+    <li>과일
+      <ul>
+        <li>사과</li>
+        <li>바나나</li>
+      </ul>
+    </li>
+    <li>채소
+      <ul>
+        <li>당근</li>
+        <li>양파</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3>설명 목록 (dl)</h3>
+  <dl>
+    <dt>HTML</dt>
+    <dd>웹 페이지의 구조를 만드는 마크업 언어</dd>
+    <dt>CSS</dt>
+    <dd>웹 페이지의 스타일을 꾸미는 언어</dd>
+    <dt>JavaScript</dt>
+    <dd>웹 페이지에 동작을 추가하는 프로그래밍 언어</dd>
+  </dl>
+</section>
+
+<!-- ================================ -->
+<!-- 5. 테이블 (표) -->
+<!-- ================================ -->
+<section>
+  <h2>5. 테이블 (표)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>이름</th>
+        <th>나이</th>
+        <th>직업</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>홍길동</td>
+        <td>25</td>
+        <td>개발자</td>
+      </tr>
+      <tr>
+        <td>김철수</td>
+        <td>30</td>
+        <td>디자이너</td>
+      </tr>
+      <tr>
+        <td>이영희</td>
+        <td>28</td>
+        <td>기획자</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>셀 병합 예시</h3>
+  <table>
+    <tr>
+      <td colspan="2">colspan=2 (가로 2칸 병합)</td>
+      <td>C</td>
+    </tr>
+    <tr>
+      <td rowspan="2">rowspan=2 (세로 2칸 병합)</td>
+      <td>B</td>
+      <td>C</td>
+    </tr>
+    <tr>
+      <td>B</td>
+      <td>C</td>
+    </tr>
+  </table>
+</section>
+
+<!-- ================================ -->
+<!-- 6. 폼 (입력 양식) -->
+<!-- ================================ -->
+<section>
+  <h2>6. 폼 (입력 양식)</h2>
+  <form action="#" method="post">
+
+    <label for="username">이름:</label>
+    <input type="text" id="username" name="username" placeholder="이름을 입력하세요">
+    <br><br>
+
+    <label for="email">이메일:</label>
+    <input type="email" id="email" name="email" placeholder="email@example.com">
+    <br><br>
+
+    <label for="pw">비밀번호:</label>
+    <input type="password" id="pw" name="pw">
+    <br><br>
+
+    <label for="age">나이:</label>
+    <input type="number" id="age" name="age" min="1" max="120">
+    <br><br>
+
+    <label for="birthday">생일:</label>
+    <input type="date" id="birthday" name="birthday">
+    <br><br>
+
+    <label for="color">좋아하는 색:</label>
+    <input type="color" id="color" name="color">
+    <br><br>
+
+    <label for="range">만족도 (1~10):</label>
+    <input type="range" id="range" name="range" min="1" max="10">
+    <br><br>
+
+    <label>성별:</label>
+    <input type="radio" name="gender" value="male" id="male"> <label for="male">남</label>
+    <input type="radio" name="gender" value="female" id="female"> <label for="female">여</label>
+    <br><br>
+
+    <label>취미:</label>
+    <input type="checkbox" name="hobby" value="reading" id="reading"> <label for="reading">독서</label>
+    <input type="checkbox" name="hobby" value="game" id="game"> <label for="game">게임</label>
+    <input type="checkbox" name="hobby" value="sports" id="sports"> <label for="sports">운동</label>
+    <br><br>
+
+    <label for="city">도시:</label>
+    <select id="city" name="city">
+      <option value="">선택하세요</option>
+      <option value="seoul">서울</option>
+      <option value="busan">부산</option>
+      <option value="daegu">대구</option>
+      <option value="jeju">제주</option>
+    </select>
+    <br><br>
+
+    <label for="message">메시지:</label><br>
+    <textarea id="message" name="message" rows="4" cols="40" placeholder="내용을 입력하세요"></textarea>
+    <br><br>
+
+    <label for="file">파일 업로드:</label>
+    <input type="file" id="file" name="file">
+    <br><br>
+
+    <button type="submit">제출하기</button>
+    <button type="reset">초기화</button>
+
+  </form>
+</section>
+
+<!-- ================================ -->
+<!-- 7. 시맨틱 태그 (의미있는 구조 태그) -->
+<!-- ================================ -->
+<section>
+  <h2>7. 시맨틱 태그</h2>
+  <p>시맨틱 태그는 페이지 구조에 의미를 부여합니다:</p>
+
+  <header style="background: #ddd; padding: 10px; margin: 5px 0;">
+    <strong>&lt;header&gt;</strong> - 머리말 영역 (로고, 네비게이션 등)
+  </header>
+
+  <nav style="background: #d0e0ff; padding: 10px; margin: 5px 0;">
+    <strong>&lt;nav&gt;</strong> - 네비게이션 영역
+    <a href="#">홈</a> | <a href="#">소개</a> | <a href="#">연락처</a>
+  </nav>
+
+  <main style="background: #e0ffe0; padding: 10px; margin: 5px 0;">
+    <strong>&lt;main&gt;</strong> - 페이지의 주요 콘텐츠
+
+    <article style="background: #fff; padding: 10px; margin: 5px; border: 1px solid #ccc;">
+      <strong>&lt;article&gt;</strong> - 독립적인 콘텐츠 (블로그 글, 뉴스 기사 등)
+    </article>
+
+    <aside style="background: #fff0e0; padding: 10px; margin: 5px;">
+      <strong>&lt;aside&gt;</strong> - 부가 정보 (사이드바, 광고 등)
+    </aside>
+  </main>
+
+  <footer style="background: #ddd; padding: 10px; margin: 5px 0;">
+    <strong>&lt;footer&gt;</strong> - 바닥글 영역 (저작권, 연락처 등)
+  </footer>
+</section>
+
+<!-- ================================ -->
+<!-- 8. 미디어 태그 -->
+<!-- ================================ -->
+<section>
+  <h2>8. 미디어 태그</h2>
+
+  <h3>비디오 (video)</h3>
+  <video width="320" height="240" controls>
+    <source src="movie.mp4" type="video/mp4">
+    브라우저가 비디오를 지원하지 않습니다.
+  </video>
+
+  <h3>오디오 (audio)</h3>
+  <audio controls>
+    <source src="audio.mp3" type="audio/mpeg">
+    브라우저가 오디오를 지원하지 않습니다.
+  </audio>
+
+  <h3>iframe (외부 페이지 삽입)</h3>
+  <iframe src="https://www.google.com/maps/embed" width="400" height="200" style="border:1px solid #ccc;" title="지도"></iframe>
+</section>
+
+<!-- ================================ -->
+<!-- 9. div와 span -->
+<!-- ================================ -->
+<section>
+  <h2>9. div와 span</h2>
+  <div style="background: #f0f0f0; padding: 20px; margin: 10px 0;">
+    <strong>&lt;div&gt;</strong>는 블록 요소입니다. 한 줄을 전부 차지합니다.
+  </div>
+  <div style="background: #e0e0e0; padding: 20px; margin: 10px 0;">
+    또 다른 div 블록
+  </div>
+  <p>
+    <span style="color: red;">span은 인라인 요소</span>입니다.
+    <span style="color: blue;">텍스트 일부분만</span> 감쌀 수 있습니다.
+  </p>
+</section>
+
+<!-- ================================ -->
+<!-- 10. 기타 유용한 태그 -->
+<!-- ================================ -->
+<section>
+  <h2>10. 기타 유용한 태그</h2>
+
+  <h3>수평선 (hr)</h3>
+  <p>위 내용</p>
+  <hr>
+  <p>아래 내용</p>
+
+  <h3>줄바꿈 (br)</h3>
+  <p>첫 번째 줄<br>두 번째 줄<br>세 번째 줄</p>
+
+  <h3>접기/펼치기 (details + summary)</h3>
+  <details>
+    <summary>클릭하면 내용이 보입니다</summary>
+    <p>숨겨진 내용이 여기에 있습니다! details와 summary 태그를 사용합니다.</p>
+  </details>
+
+  <h3>진행 표시줄 (progress)</h3>
+  <label for="prog">다운로드 진행률:</label>
+  <progress id="prog" value="70" max="100">70%</progress>
+
+  <h3>측정 표시 (meter)</h3>
+  <label for="disk">디스크 사용량:</label>
+  <meter id="disk" value="0.6" min="0" max="1">60%</meter>
+
+  <h3>시간 (time)</h3>
+  <p>회의 시간: <time datetime="2026-03-28T14:00">2026년 3월 28일 오후 2시</time></p>
+
+  <h3>figure와 figcaption (이미지 + 설명)</h3>
+  <figure>
+    <img src="https://via.placeholder.com/200x120" alt="예시">
+    <figcaption>그림 1: figure 태그로 이미지와 설명을 묶습니다</figcaption>
+  </figure>
+
+  <h3>주소 (address)</h3>
+  <address>
+    작성자: 홍길동<br>
+    이메일: hong@example.com<br>
+    서울특별시 강남구
+  </address>
+</section>
+
+<!-- 앵커 링크 도착점 -->
+<footer id="footer" style="text-align: center; padding: 20px; background: #333; color: white; margin-top: 40px;">
+  <p>HTML + CSS + JS 공부 페이지</p>
+</footer>
+
+<hr style="border: 3px solid #f39c12; margin: 60px 0 40px;">
+<h1 style="text-align: center; color: #e74c3c;">아래는 JavaScript 예시</h1>
+<hr style="border: 3px solid #f39c12; margin: 40px 0 60px;">
+
+<!-- 스크롤 진행률 바 -->
+<div id="scroll-progress" style="width: 0%;"></div>
+
+<!-- 마우스 따라다니는 원 -->
+<div id="mouse-follower"></div>
+
+<!-- ================================ -->
+<!-- JS 1. 기본 문법: 변수, 자료형, 연산 -->
+<!-- ================================ -->
+<section>
+  <h2 class="js-section-title">JS 1. 변수 & 자료형 & 연산자</h2>
+  <p>버튼을 누르면 JavaScript 기본 문법 결과가 출력됩니다.</p>
+  <button class="js-btn js-btn-blue" onclick="jsBasic()">실행하기</button>
+  <div class="js-output" id="js-basic-output">// 여기에 결과가 표시됩니다</div>
+</section>
+
+<!-- ================================ -->
+<!-- JS 2. 조건문 & 반복문 -->
+<!-- ================================ -->
+<section>
+  <h2 class="js-section-title">JS 2. 조건문 & 반복문</h2>
+  <label for="js-score">점수 입력 (0~100): </label>
+  <input type="number" id="js-score" value="85" min="0" max="100" style="padding:8px; width:80px; border-radius:6px; border:2px solid #ddd;">
+  <button class="js-btn js-btn-green" onclick="jsCondition()">학점 확인</button>
+  <button class="js-btn js-btn-purple" onclick="jsLoop()">구구단 출력</button>
+  <div class="js-output" id="js-condition-output">// 여기에 결과가 표시됩니다</div>
+</section>
+
+<!-- ================================ -->
+<!-- JS 3. 함수 & 배열 -->
+<!-- ================================ -->
+<section>
+  <h2 class="js-section-title">JS 3. 함수 & 배열 메서드</h2>
+  <button class="js-btn js-btn-orange" onclick="jsArray()">배열 메서드 실행</button>
+  <div class="js-output" id="js-array-output">// 여기에 결과가 표시됩니다</div>
+</section>
+
+<!-- ================================ -->
+<!-- JS 4. DOM 조작: 카운터 -->
+<!-- ================================ -->
+<section>
+  <h2 class="js-section-title">JS 4. DOM 조작 - 카운터</h2>
+  <p><code>document.getElementById()</code>로 요소를 가져와서 내용을 변경합니다.</p>
+  <div class="counter-display" id="counter-display">0</div>
+  <div style="text-align: center;">
+    <button class="js-btn js-btn-red" onclick="counterChange(-10)">-10</button>
+    <button class="js-btn js-btn-red" onclick="counterChange(-1)">-1</button>
+    <button class="js-btn js-btn-dark" onclick="counterReset()">초기화</button>
+    <button class="js-btn js-btn-green" onclick="counterChange(1)">+1</button>
+    <button class="js-btn js-btn-green" onclick="counterChange(10)">+10</button>
+  </div>
+</section>
+
+<!-- ================================ -->
+<!-- JS 5. 이벤트: 색상 바꾸기 -->
+<!-- ================================ -->
+<section>
+  <h2 class="js-section-title">JS 5. 이벤트 - 클릭할 때마다 색 변경</h2>
+  <p>박스를 클릭하면 랜덤 색상으로 바뀝니다. <code>addEventListener</code> 사용.</p>
+  <div class="color-change-box" id="color-box" style="background: #667eea;">
+    클릭하세요!
+  </div>
+  <p>현재 색상: <code id="color-code">#667eea</code></p>
+</section>
+
+<!-- ================================ -->
+<!-- JS 6. 타이핑 애니메이션 -->
+<!-- ================================ -->
+<section>
+  <h2 class="js-section-title">JS 6. 타이핑 애니메이션</h2>
+  <p><code>setInterval</code>로 한 글자씩 출력하는 효과입니다.</p>
+  <div class="typing-text" id="typing-text"></div>
+  <br>
+  <button class="js-btn js-btn-blue" onclick="startTyping()">타이핑 시작</button>
+  <button class="js-btn js-btn-dark" onclick="resetTyping()">초기화</button>
+</section>
+
+<!-- ================================ -->
+<!-- JS 7. 스톱워치 (타이머) -->
+<!-- ================================ -->
+<section>
+  <h2 class="js-section-title">JS 7. 스톱워치</h2>
+  <p><code>setInterval</code>과 <code>clearInterval</code>로 타이머를 만듭니다.</p>
+  <div class="timer-display" id="timer-display">00:00.00</div>
+  <div style="text-align: center;">
+    <button class="js-btn js-btn-green" onclick="timerStart()">시작</button>
+    <button class="js-btn js-btn-red" onclick="timerStop()">정지</button>
+    <button class="js-btn js-btn-dark" onclick="timerReset()">초기화</button>
+  </div>
+</section>
+
+<!-- ================================ -->
+<!-- JS 8. TODO 리스트 -->
+<!-- ================================ -->
+<section>
+  <h2 class="js-section-title">JS 8. TODO 리스트 (DOM 생성/삭제)</h2>
+  <p><code>createElement</code>, <code>appendChild</code>, <code>remove</code>로 요소를 동적으로 추가/삭제합니다.</p>
+  <div class="todo-input-wrap">
+    <input type="text" id="todo-input" placeholder="할 일을 입력하세요" onkeydown="if(event.key==='Enter') addTodo()">
+    <button class="js-btn js-btn-blue" onclick="addTodo()">추가</button>
+  </div>
+  <ul class="todo-list" id="todo-list"></ul>
+</section>
+
+<!-- ================================ -->
+<!-- JS 9. Canvas 파티클 (마우스 인터랙션) -->
+<!-- ================================ -->
+<section>
+  <h2 class="js-section-title">JS 9. Canvas 파티클 (마우스로 클릭/드래그)</h2>
+  <p>캔버스에 마우스를 클릭하거나 드래그하면 파티클이 생깁니다. <code>requestAnimationFrame</code> 사용.</p>
+  <canvas id="particle-canvas" width="700" height="350"></canvas>
+  <button class="js-btn js-btn-red" onclick="clearParticles()">파티클 지우기</button>
+</section>
+
+<!-- ================================ -->
+<!-- JS 10. Canvas 공 튀기기 애니메이션 -->
+<!-- ================================ -->
+<section>
+  <h2 class="js-section-title">JS 10. Canvas 공 튀기기 물리 애니메이션</h2>
+  <p>중력, 바닥 반사, 마찰이 적용된 공 애니메이션입니다.</p>
+  <canvas id="bounce-canvas" width="700" height="300"></canvas>
+  <div>
+    <button class="js-btn js-btn-green" onclick="addBall()">공 추가</button>
+    <button class="js-btn js-btn-red" onclick="clearBalls()">전부 지우기</button>
+  </div>
+</section>
+
+<!-- ================================ -->
+<!-- JS 11. 다크모드 토글 -->
+<!-- ================================ -->
+<section>
+  <h2 class="js-section-title">JS 11. 다크모드 토글</h2>
+  <p><code>classList.toggle</code>로 body에 클래스를 추가/제거합니다.</p>
+  <button class="js-btn js-btn-dark" onclick="toggleDarkMode()" id="dark-mode-btn">다크모드 ON</button>
+</section>
+
+<!-- ================================ -->
+<!-- JS 12. 마우스 따라다니는 원 -->
+<!-- ================================ -->
+<section>
+  <h2 class="js-section-title">JS 12. 마우스 따라다니기</h2>
+  <p><code>mousemove</code> 이벤트로 마우스 위치를 추적합니다. 토글 버튼을 누르면 반투명 원이 마우스를 따라다닙니다.</p>
+  <button class="js-btn js-btn-purple" onclick="toggleFollower()" id="follower-btn">마우스 따라다니기 ON</button>
+</section>
+
+<footer style="text-align: center; padding: 30px; background: #1a1a2e; color: #ccc; margin-top: 60px; border-radius: 12px;">
+  <p style="font-size: 1.2em;">HTML + CSS + JavaScript 공부 페이지</p>
+  <p style="font-size: 0.9em; opacity: 0.6;">모든 코드는 이 파일 안의 &lt;style&gt;과 &lt;script&gt;에 있습니다</p>
+</footer>
+
+<!-- ============================================================ -->
+<!-- JavaScript 코드                                               -->
+<!-- ============================================================ -->
+<script>
+// ============================================
+// JS 1. 변수 & 자료형 & 연산자
+// ============================================
+function jsBasic() {
+  const output = document.getElementById('js-basic-output');
+  let result = '';
+
+  // var, let, const
+  result += '// --- 변수 선언 ---\n';
+  let myName = '홍길동';         // let: 변경 가능
+  const PI = 3.14159;           // const: 변경 불가 (상수)
+  let age = 25;
+  result += `let myName = "${myName}"\n`;
+  result += `const PI = ${PI}\n`;
+  result += `let age = ${age}\n\n`;
+
+  // 자료형
+  result += '// --- 자료형 (typeof) ---\n';
+  result += `typeof "문자열" = "${typeof "문자열"}"\n`;
+  result += `typeof 42 = "${typeof 42}"\n`;
+  result += `typeof true = "${typeof true}"\n`;
+  result += `typeof undefined = "${typeof undefined}"\n`;
+  result += `typeof null = "${typeof null}" (JS의 유명한 버그!)\n`;
+  result += `typeof [1,2,3] = "${typeof [1,2,3]}"\n`;
+  result += `typeof {a:1} = "${typeof {a:1}}"\n\n`;
+
+  // 연산자
+  result += '// --- 연산자 ---\n';
+  result += `10 + 3 = ${10 + 3}\n`;
+  result += `10 - 3 = ${10 - 3}\n`;
+  result += `10 * 3 = ${10 * 3}\n`;
+  result += `10 / 3 = ${10 / 3}\n`;
+  result += `10 % 3 = ${10 % 3}  (나머지)\n`;
+  result += `2 ** 10 = ${2 ** 10}  (거듭제곱)\n\n`;
+
+  // == vs ===
+  result += '// --- == vs === ---\n';
+  result += `"5" == 5  → ${("5" == 5)}   (값만 비교)\n`;
+  result += `"5" === 5 → ${"5" === 5}  (값 + 타입 비교)\n`;
+
+  // 템플릿 리터럴
+  result += `\n// --- 템플릿 리터럴 ---\n`;
+  result += `\`이름: \${myName}, 나이: \${age}\` → "이름: ${myName}, 나이: ${age}"`;
+
+  output.textContent = result;
+}
+
+
+// ============================================
+// JS 2. 조건문 & 반복문
+// ============================================
+function jsCondition() {
+  const score = Number(document.getElementById('js-score').value);
+  const output = document.getElementById('js-condition-output');
+  let result = `// 입력 점수: ${score}\n\n`;
+
+  // if - else if - else
+  let grade;
+  if (score >= 90) {
+    grade = 'A';
+  } else if (score >= 80) {
+    grade = 'B';
+  } else if (score >= 70) {
+    grade = 'C';
+  } else if (score >= 60) {
+    grade = 'D';
+  } else {
+    grade = 'F';
+  }
+  result += `// if-else 결과\n`;
+  result += `학점: ${grade}\n\n`;
+
+  // 삼항 연산자
+  const pass = score >= 60 ? '합격' : '불합격';
+  result += `// 삼항 연산자\n`;
+  result += `score >= 60 ? "합격" : "불합격" → "${pass}"\n\n`;
+
+  // switch
+  result += `// switch문\n`;
+  switch (grade) {
+    case 'A': result += '결과: 매우 우수합니다!\n'; break;
+    case 'B': result += '결과: 우수합니다!\n'; break;
+    case 'C': result += '결과: 보통입니다.\n'; break;
+    case 'D': result += '결과: 노력이 필요합니다.\n'; break;
+    default:  result += '결과: 재수강하세요.\n'; break;
+  }
+
+  output.textContent = result;
+}
+
+function jsLoop() {
+  const output = document.getElementById('js-condition-output');
+  let result = '// --- for문: 구구단 ---\n\n';
+
+  // for문
+  for (let i = 2; i <= 5; i++) {
+    result += `[ ${i}단 ] `;
+    for (let j = 1; j <= 9; j++) {
+      result += `${i}×${j}=${i*j} `;
+    }
+    result += '\n';
+  }
+
+  result += '\n// --- while문 ---\n';
+  let count = 0;
+  while (count < 5) {
+    result += `count = ${count}, `;
+    count++;
+  }
+
+  result += `\n\n// --- for...of (배열 순회) ---\n`;
+  const fruits = ['사과', '바나나', '딸기', '포도'];
+  for (const fruit of fruits) {
+    result += `${fruit} `;
+  }
+
+  output.textContent = result;
+}
+
+
+// ============================================
+// JS 3. 함수 & 배열 메서드
+// ============================================
+function jsArray() {
+  const output = document.getElementById('js-array-output');
+  let result = '';
+
+  const numbers = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3];
+  result += `원본 배열: [${numbers}]\n\n`;
+
+  // map: 각 요소 변환
+  const doubled = numbers.map(n => n * 2);
+  result += `map(n => n * 2): [${doubled}]\n`;
+
+  // filter: 조건에 맞는 요소만
+  const big = numbers.filter(n => n > 4);
+  result += `filter(n => n > 4): [${big}]\n`;
+
+  // reduce: 하나의 값으로 축소
+  const sum = numbers.reduce((acc, n) => acc + n, 0);
+  result += `reduce(합계): ${sum}\n`;
+
+  // find: 첫 번째로 조건에 맞는 요소
+  const found = numbers.find(n => n > 7);
+  result += `find(n => n > 7): ${found}\n`;
+
+  // some / every
+  result += `some(n => n > 8): ${numbers.some(n => n > 8)}\n`;
+  result += `every(n => n > 0): ${numbers.every(n => n > 0)}\n`;
+
+  // sort
+  const sorted = [...numbers].sort((a, b) => a - b);
+  result += `sort (오름차순): [${sorted}]\n`;
+
+  // includes
+  result += `includes(9): ${numbers.includes(9)}\n`;
+  result += `indexOf(5): ${numbers.indexOf(5)}\n\n`;
+
+  // 화살표 함수
+  result += `// --- 화살표 함수 ---\n`;
+  const add = (a, b) => a + b;
+  result += `const add = (a, b) => a + b\n`;
+  result += `add(3, 5) = ${add(3, 5)}\n\n`;
+
+  // 구조 분해 할당
+  result += `// --- 구조 분해 할당 ---\n`;
+  const person = { name: '김철수', age: 25, job: '개발자' };
+  const { name, age: personAge, job } = person;
+  result += `const { name, age, job } = { name:"김철수", age:25, job:"개발자" }\n`;
+  result += `name="${name}", age=${personAge}, job="${job}"\n\n`;
+
+  // 스프레드 연산자
+  result += `// --- 스프레드 연산자 (...) ---\n`;
+  const arr1 = [1, 2, 3];
+  const arr2 = [4, 5, 6];
+  const merged = [...arr1, ...arr2];
+  result += `[...arr1, ...arr2] = [${merged}]`;
+
+  output.textContent = result;
+}
+
+
+// ============================================
+// JS 4. 카운터
+// ============================================
+let counterValue = 0;
+
+function counterChange(amount) {
+  counterValue += amount;
+  const display = document.getElementById('counter-display');
+  display.textContent = counterValue;
+  display.style.color = counterValue > 0 ? '#2ecc71' : counterValue < 0 ? '#e74c3c' : '#667eea';
+
+  // 팝 애니메이션
+  display.classList.add('pop');
+  setTimeout(() => display.classList.remove('pop'), 200);
+}
+
+function counterReset() {
+  counterValue = 0;
+  const display = document.getElementById('counter-display');
+  display.textContent = '0';
+  display.style.color = '#667eea';
+}
+
+
+// ============================================
+// JS 5. 색상 변경 (이벤트)
+// ============================================
+document.getElementById('color-box').addEventListener('click', function() {
+  const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+  this.style.background = randomColor;
+  this.textContent = randomColor;
+  document.getElementById('color-code').textContent = randomColor;
+});
+
+
+// ============================================
+// JS 6. 타이핑 애니메이션
+// ============================================
+let typingInterval = null;
+const typingMessages = [
+  'JavaScript로 만드는 타이핑 효과!',
+  'setInterval로 한 글자씩 출력합니다.',
+  'clearInterval로 멈출 수 있어요.',
+  '웹 개발은 정말 재미있습니다!'
+];
+let typingMsgIndex = 0;
+let typingCharIndex = 0;
+
+function startTyping() {
+  if (typingInterval) return;
+  const el = document.getElementById('typing-text');
+
+  typingInterval = setInterval(() => {
+    const msg = typingMessages[typingMsgIndex];
+    if (typingCharIndex < msg.length) {
+      el.textContent += msg[typingCharIndex];
+      typingCharIndex++;
+    } else {
+      // 다음 메시지로
+      clearInterval(typingInterval);
+      typingInterval = null;
+      typingMsgIndex = (typingMsgIndex + 1) % typingMessages.length;
+      typingCharIndex = 0;
+      setTimeout(() => {
+        el.textContent = '';
+        startTyping();
+      }, 1500);
+    }
+  }, 80);
+}
+
+function resetTyping() {
+  clearInterval(typingInterval);
+  typingInterval = null;
+  typingMsgIndex = 0;
+  typingCharIndex = 0;
+  document.getElementById('typing-text').textContent = '';
+}
+
+
+// ============================================
+// JS 7. 스톱워치
+// ============================================
+let timerInterval = null;
+let timerMs = 0;
+
+function timerStart() {
+  if (timerInterval) return;
+  timerInterval = setInterval(() => {
+    timerMs += 10;
+    updateTimerDisplay();
+  }, 10);
+}
+
+function timerStop() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+}
+
+function timerReset() {
+  timerStop();
+  timerMs = 0;
+  updateTimerDisplay();
+}
+
+function updateTimerDisplay() {
+  const mins = String(Math.floor(timerMs / 60000)).padStart(2, '0');
+  const secs = String(Math.floor((timerMs % 60000) / 1000)).padStart(2, '0');
+  const ms = String(Math.floor((timerMs % 1000) / 10)).padStart(2, '0');
+  document.getElementById('timer-display').textContent = `${mins}:${secs}.${ms}`;
+}
+
+
+// ============================================
+// JS 8. TODO 리스트
+// ============================================
+function addTodo() {
+  const input = document.getElementById('todo-input');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const list = document.getElementById('todo-list');
+  const li = document.createElement('li');
+
+  // 체크박스
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.addEventListener('change', () => {
+    li.classList.toggle('done', checkbox.checked);
+  });
+
+  // 텍스트
+  const span = document.createElement('span');
+  span.textContent = text;
+
+  // 삭제 버튼
+  const deleteBtn = document.createElement('button');
+  deleteBtn.textContent = '삭제';
+  deleteBtn.addEventListener('click', () => {
+    li.style.transform = 'translateX(100%)';
+    li.style.opacity = '0';
+    setTimeout(() => li.remove(), 300);
+  });
+
+  li.appendChild(checkbox);
+  li.appendChild(span);
+  li.appendChild(deleteBtn);
+  list.appendChild(li);
+
+  input.value = '';
+  input.focus();
+}
+
+
+// ============================================
+// JS 9. Canvas 파티클
+// ============================================
+const particleCanvas = document.getElementById('particle-canvas');
+const pCtx = particleCanvas.getContext('2d');
+let particles = [];
+
+class Particle {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.vx = (Math.random() - 0.5) * 6;
+    this.vy = (Math.random() - 0.5) * 6;
+    this.radius = Math.random() * 6 + 2;
+    this.color = `hsl(${Math.random() * 360}, 80%, 60%)`;
+    this.life = 1;
+    this.decay = Math.random() * 0.015 + 0.005;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.life -= this.decay;
+    this.vx *= 0.99;
+    this.vy *= 0.99;
+  }
+  draw(ctx) {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius * this.life, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.globalAlpha = this.life;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+}
+
+function createParticles(x, y, count) {
+  for (let i = 0; i < count; i++) {
+    particles.push(new Particle(x, y));
+  }
+}
+
+let isMouseDown = false;
+particleCanvas.addEventListener('mousedown', (e) => {
+  isMouseDown = true;
+  const rect = particleCanvas.getBoundingClientRect();
+  createParticles(e.clientX - rect.left, e.clientY - rect.top, 20);
+});
+particleCanvas.addEventListener('mousemove', (e) => {
+  if (!isMouseDown) return;
+  const rect = particleCanvas.getBoundingClientRect();
+  createParticles(e.clientX - rect.left, e.clientY - rect.top, 5);
+});
+particleCanvas.addEventListener('mouseup', () => isMouseDown = false);
+particleCanvas.addEventListener('mouseleave', () => isMouseDown = false);
+
+function animateParticles() {
+  pCtx.fillStyle = 'rgba(250, 250, 250, 0.15)';
+  pCtx.fillRect(0, 0, particleCanvas.width, particleCanvas.height);
+
+  particles = particles.filter(p => p.life > 0);
+  particles.forEach(p => {
+    p.update();
+    p.draw(pCtx);
+  });
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+function clearParticles() {
+  particles = [];
+  pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+}
+
+
+// ============================================
+// JS 10. 공 튀기기 물리 애니메이션
+// ============================================
+const bounceCanvas = document.getElementById('bounce-canvas');
+const bCtx = bounceCanvas.getContext('2d');
+let balls = [];
+
+class Ball {
+  constructor() {
+    this.radius = Math.random() * 20 + 10;
+    this.x = Math.random() * (bounceCanvas.width - this.radius * 2) + this.radius;
+    this.y = this.radius;
+    this.vx = (Math.random() - 0.5) * 8;
+    this.vy = 0;
+    this.gravity = 0.3;
+    this.friction = 0.99;
+    this.bounce = 0.7 + Math.random() * 0.2;
+    this.color = `hsl(${Math.random() * 360}, 70%, 55%)`;
+  }
+  update() {
+    this.vy += this.gravity;
+    this.x += this.vx;
+    this.y += this.vy;
+    this.vx *= this.friction;
+
+    // 바닥 충돌
+    if (this.y + this.radius > bounceCanvas.height) {
+      this.y = bounceCanvas.height - this.radius;
+      this.vy = -this.vy * this.bounce;
+    }
+    // 좌우 벽 충돌
+    if (this.x - this.radius < 0) {
+      this.x = this.radius;
+      this.vx = -this.vx;
+    }
+    if (this.x + this.radius > bounceCanvas.width) {
+      this.x = bounceCanvas.width - this.radius;
+      this.vx = -this.vx;
+    }
+  }
+  draw(ctx) {
+    // 그라데이션 공
+    const grad = ctx.createRadialGradient(
+      this.x - this.radius * 0.3, this.y - this.radius * 0.3, this.radius * 0.1,
+      this.x, this.y, this.radius
+    );
+    grad.addColorStop(0, 'white');
+    grad.addColorStop(1, this.color);
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // 그림자
+    ctx.beginPath();
+    ctx.ellipse(this.x, bounceCanvas.height - 2, this.radius * 0.8, 4, 0, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,0,0,0.2)';
+    ctx.fill();
+  }
+}
+
+function addBall() {
+  balls.push(new Ball());
+}
+
+function clearBalls() {
+  balls = [];
+}
+
+// 초기 공 3개
+for (let i = 0; i < 3; i++) addBall();
+
+function animateBalls() {
+  bCtx.fillStyle = '#1a1a2e';
+  bCtx.fillRect(0, 0, bounceCanvas.width, bounceCanvas.height);
+
+  balls.forEach(ball => {
+    ball.update();
+    ball.draw(bCtx);
+  });
+  requestAnimationFrame(animateBalls);
+}
+animateBalls();
+
+
+// ============================================
+// JS 11. 다크모드 토글
+// ============================================
+function toggleDarkMode() {
+  document.body.classList.toggle('dark-mode');
+  const btn = document.getElementById('dark-mode-btn');
+  const isDark = document.body.classList.contains('dark-mode');
+  btn.textContent = isDark ? '다크모드 OFF' : '다크모드 ON';
+}
+
+
+// ============================================
+// JS 12. 마우스 따라다니기
+// ============================================
+let followerEnabled = false;
+const follower = document.getElementById('mouse-follower');
+
+function toggleFollower() {
+  followerEnabled = !followerEnabled;
+  follower.style.display = followerEnabled ? 'block' : 'none';
+  document.getElementById('follower-btn').textContent =
+    followerEnabled ? '마우스 따라다니기 OFF' : '마우스 따라다니기 ON';
+}
+
+document.addEventListener('mousemove', (e) => {
+  if (!followerEnabled) return;
+  follower.style.left = (e.clientX - 15) + 'px';
+  follower.style.top = (e.clientY - 15) + 'px';
+});
+
+
+// ============================================
+// 스크롤 진행률 바
+// ============================================
+window.addEventListener('scroll', () => {
+  const scrollTop = document.documentElement.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const progress = (scrollTop / scrollHeight) * 100;
+  document.getElementById('scroll-progress').style.width = progress + '%';
+});
+</script>
+
+</body>
+</html>

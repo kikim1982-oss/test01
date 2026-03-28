@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML & CSS 기초 - 웹 개발의 첫걸음</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', 'Helvetica Neue', sans-serif;
+      background: #000;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Slide transitions */
+    .slide-container {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.97) translateY(12px);
+      transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      pointer-events: none;
+    }
+
+    .slide-container.active {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      pointer-events: auto;
+    }
+
+    .slide-container.prev {
+      opacity: 0;
+      transform: scale(0.97) translateY(-12px);
+    }
+
+    /* Entrance animations for content */
+    .slide-container.active .anim-item {
+      animation: fadeInUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Code block styling */
+    .code-block {
+      background: #1d1d1f;
+      color: #e5e5e7;
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-family: 'SF Mono', 'Fira Code', 'Menlo', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-x: auto;
+    }
+
+    .code-inline {
+      background: rgba(0, 122, 255, 0.08);
+      color: #007AFF;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-family: 'SF Mono', 'Fira Code', 'Menlo', monospace;
+      font-size: 0.88em;
+      font-weight: 500;
+    }
+
+    .tag { color: #FF375F; }
+    .attr { color: #BF5AF2; }
+    .str { color: #30D158; }
+    .comment { color: #636366; }
+    .prop { color: #64D2FF; }
+    .val { color: #FFD60A; }
+
+    /* Progress bar */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #007AFF, #5856D6);
+      transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: 100;
+    }
+
+    /* Navigation dots */
+    .nav-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .nav-dot:hover { background: rgba(0, 0, 0, 0.35); transform: scale(1.3); }
+    .nav-dot.active { background: #007AFF; transform: scale(1.2); }
+
+    /* Overview grid */
+    .overview-grid {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 200;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      padding: 40px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      overflow-y: auto;
+    }
+    .overview-grid.open { opacity: 1; pointer-events: auto; }
+
+    .overview-thumb {
+      background: white;
+      border-radius: 12px;
+      aspect-ratio: 16/10;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      position: relative;
+    }
+    .overview-thumb:hover { transform: scale(1.05); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+    .overview-thumb.active { box-shadow: 0 0 0 3px #007AFF, 0 8px 30px rgba(0,122,255,0.3); }
+
+    /* Semantic diagram */
+    .semantic-box {
+      border: 2px solid;
+      border-radius: 10px;
+      padding: 8px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'SF Mono', monospace;
+      transition: transform 0.2s;
+    }
+    .semantic-box:hover { transform: scale(1.03); }
+
+    /* Box model diagram */
+    .box-model-margin {
+      background: #FFEAA7;
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+    }
+    .box-model-border {
+      background: #74B9FF;
+      padding: 18px;
+      border-radius: 10px;
+    }
+    .box-model-padding {
+      background: #A29BFE;
+      padding: 18px;
+      border-radius: 8px;
+    }
+    .box-model-content {
+      background: #55EFC4;
+      padding: 20px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+
+    /* Slide background */
+    .slide-bg {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F5F5F7 100%);
+      width: 100vw;
+      height: 100vh;
+      padding: 60px 80px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-bg-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.08;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .slide-bg > *:not(.slide-bg-img) {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Touch swipe */
+    #root { touch-action: pan-y; }
+
+    /* Form styling inside slide */
+    .demo-input {
+      border: 1.5px solid #d2d2d7;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      font-family: inherit;
+      width: 100%;
+    }
+    .demo-input:focus { border-color: #007AFF; box-shadow: 0 0 0 3px rgba(0,122,255,0.15); }
+
+    .demo-select {
+      border: 1.5px solid #d2d2d7;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px;
+      outline: none;
+      background: white;
+      font-family: inherit;
+      width: 100%;
+    }
+
+    .demo-textarea {
+      border: 1.5px solid #d2d2d7;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px;
+      outline: none;
+      resize: vertical;
+      font-family: inherit;
+      width: 100%;
+      transition: border-color 0.2s;
+    }
+    .demo-textarea:focus { border-color: #007AFF; box-shadow: 0 0 0 3px rgba(0,122,255,0.15); }
+
+    .demo-btn {
+      background: #007AFF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-family: inherit;
+    }
+    .demo-btn:hover { background: #0056CC; }
+
+    .demo-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1d1d1f;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    /* Scrollbar for overflowing slide content */
+    .slide-scroll::-webkit-scrollbar { width: 4px; }
+    .slide-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    // ========================================
+    // React Hooks Destructuring
+    // ========================================
+    const { useState, useEffect, useCallback, useRef, useMemo } = React;
+
+    // ========================================
+    // Utility: Animation delay helper
+    // ========================================
+    function animDelay(index) {
+      return { animationDelay: `${index * 0.08 + 0.15}s` };
+    }
+
+    // ========================================
+    // Slide 1 - Title
+    // ========================================
+    function TitleSlide() {
+      return (
+        <div className="slide-bg" style={{ justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+          <img src="images/slide1-title.png" className="slide-bg-img" alt="" />
+          <div>
+            <div className="anim-item" style={animDelay(0)}>
+              <div style={{ fontSize: 64, fontWeight: 200, color: '#86868b', marginBottom: 8, letterSpacing: '-0.02em' }}>
+                Welcome to
+              </div>
+            </div>
+            <div className="anim-item" style={animDelay(1)}>
+              <div style={{ fontSize: 80, fontWeight: 700, color: '#1d1d1f', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
+                HTML & CSS 기초
+              </div>
+            </div>
+            <div className="anim-item" style={animDelay(2)}>
+              <div style={{
+                fontSize: 28,
+                fontWeight: 400,
+                color: '#86868b',
+                marginTop: 24,
+                letterSpacing: '-0.01em'
+              }}>
+                웹 개발의 첫걸음
+              </div>
+            </div>
+            <div className="anim-item" style={animDelay(3)}>
+              <div style={{
+                width: 60,
+                height: 4,
+                borderRadius: 2,
+                background: 'linear-gradient(90deg, #007AFF, #5856D6)',
+                margin: '40px auto 0'
+              }} />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ========================================
+    // Slide 2 - Semantic Tags
+    // ========================================
+    function SemanticSlide() {
+      return (
+        <div className="slide-bg">
+          <img src="images/slide2-semantic.png" className="slide-bg-img" alt="" />
+          <div className="anim-item" style={animDelay(0)}>
+            <div style={{ fontSize: 14, fontWeight: 600, color: '#007AFF', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>
+              Semantic HTML
+            </div>
+            <h2 style={{ fontSize: 44, fontWeight: 700, color: '#1d1d1f', letterSpacing: '-0.02em', marginBottom: 40 }}>
+              시맨틱 태그
+            </h2>
+          </div>
+
+          <div style={{ display: 'flex', gap: 60, flex: 1, alignItems: 'flex-start' }}>
+            {/* Tag list */}
+            <div style={{ flex: 1 }}>
+              {[
+                ['<header>', '페이지 상단 영역', '#FF375F'],
+                ['<nav>', '네비게이션 링크 모음', '#FF9500'],
+                ['<main>', '주요 콘텐츠 영역', '#007AFF'],
+                ['<section>', '콘텐츠 그룹', '#5856D6'],
+                ['<footer>', '페이지 하단 영역', '#30D158'],
+              ].map(([tag, desc, color], i) => (
+                <div className="anim-item" style={{ ...animDelay(i + 1), display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20 }} key={tag}>
+                  <span className="code-inline" style={{ color, background: `${color}12`, minWidth: 120, textAlign: 'center', display: 'inline-block' }}>{tag}</span>
+                  <span style={{ fontSize: 18, color: '#424245', fontWeight: 400 }}>{desc}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Visual diagram */}
+            <div className="anim-item" style={{ ...animDelay(6), flex: 1, maxWidth: 400 }}>
+              <div style={{ background: '#F5F5F7', borderRadius: 16, padding: 20, boxShadow: '0 2px 20px rgba(0,0,0,0.06)' }}>
+                <div className="semantic-box" style={{ borderColor: '#FF375F', color: '#FF375F', marginBottom: 8, background: '#FF375F08' }}>
+                  &lt;header&gt;
+                </div>
+                <div className="semantic-box" style={{ borderColor: '#FF9500', color: '#FF9500', marginBottom: 8, background: '#FF950008' }}>
+                  &lt;nav&gt;
+                </div>
+                <div className="semantic-box" style={{ borderColor: '#007AFF', color: '#007AFF', marginBottom: 8, padding: 16, background: '#007AFF08' }}>
+                  &lt;main&gt;
+                  <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                    <div className="semantic-box" style={{ borderColor: '#5856D6', color: '#5856D6', flex: 1, background: '#5856D608', fontSize: 11 }}>
+                      &lt;section&gt;
+                    </div>
+                    <div className="semantic-box" style={{ borderColor: '#5856D6', color: '#5856D6', flex: 1, background: '#5856D608', fontSize: 11 }}>
+                      &lt;section&gt;
+                    </div>
+                  </div>
+                </div>
+                <div className="semantic-box" style={{ borderColor: '#30D158', color: '#30D158', background: '#30D15808' }}>
+                  &lt;footer&gt;
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ========================================
+    // Slide 3 - Text Tags
+    // ========================================
+    function TextTagsSlide() {
+      return (
+        <div className="slide-bg slide-scroll" style={{ overflowY: 'auto' }}>
+          <img src="images/slide3-text.png" className="slide-bg-img" alt="" />
+          <div className="anim-item" style={animDelay(0)}>
+            <div style={{ fontSize: 14, fontWeight: 600, color: '#007AFF', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>
+              Text Elements
+            </div>
+            <h2 style={{ fontSize: 44, fontWeight: 700, color: '#1d1d1f', letterSpacing: '-0.02em', marginBottom: 36 }}>
+              텍스트 태그
+            </h2>
+          </div>
+
+          <div style={{ display: 'flex', gap: 48, flex: 1 }}>
+            {/* Heading hierarchy */}
+            <div className="anim-item" style={{ ...animDelay(1), flex: 1 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 16 }}>제목 태그 계층</div>
+              <div style={{ background: '#F5F5F7', borderRadius: 14, padding: 24 }}>
+                {[
+                  [36, 'h1', '가장 큰 제목'],
+                  [30, 'h2', '섹션 제목'],
+                  [24, 'h3', '소제목'],
+                  [20, 'h4', '작은 제목'],
+                  [16, 'h5', '더 작은 제목'],
+                  [14, 'h6', '가장 작은 제목'],
+                ].map(([size, tag, label], i) => (
+                  <div key={tag} style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: i < 5 ? 10 : 0 }}>
+                    <span className="code-inline" style={{ fontSize: 12, minWidth: 40 }}>&lt;{tag}&gt;</span>
+                    <span style={{ fontSize: size, fontWeight: 700, color: '#1d1d1f' }}>{label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Inline text tags */}
+            <div className="anim-item" style={{ ...animDelay(2), flex: 1 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 16 }}>인라인 텍스트 서식</div>
+              <div style={{ background: '#F5F5F7', borderRadius: 14, padding: 24 }}>
+                {[
+                  ['<p>', '일반 문단 텍스트입니다.', (t) => <span>{t}</span>],
+                  ['<strong>', '굵은 글씨 텍스트', (t) => <strong>{t}</strong>],
+                  ['<em>', '기울임 텍스트', (t) => <em>{t}</em>],
+                  ['<mark>', '형광펜 효과', (t) => <mark style={{ background: '#FFD60A', padding: '1px 4px', borderRadius: 3 }}>{t}</mark>],
+                  ['<del>', '취소선 텍스트', (t) => <del>{t}</del>],
+                  ['<small>', '작은 글씨 텍스트', (t) => <small>{t}</small>],
+                ].map(([tag, text, render], i) => (
+                  <div key={tag} style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
+                    <span className="code-inline" style={{ fontSize: 12, minWidth: 80 }}>{tag}</span>
+                    <span style={{ fontSize: 17, color: '#1d1d1f' }}>{render(text)}</span>
+                  </div>
+                ))}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginTop: 8, paddingTop: 16, borderTop: '1px solid #e5e5e7' }}>
+                  <span className="code-inline" style={{ fontSize: 12 }}>&lt;sub&gt; &lt;sup&gt;</span>
+                  <span style={{ fontSize: 20, color: '#1d1d1f' }}>
+                    H<sub>2</sub>O &nbsp;&nbsp; E=mc<sup>2</sup>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ========================================
+    // Slide 4 - Links & Quotes
+    // ========================================
+    function LinksSlide() {
+      return (
+        <div className="slide-bg">
+          <img src="images/slide4-links.png" className="slide-bg-img" alt="" />
+          <div className="anim-item" style={animDelay(0)}>
+            <div style={{ fontSize: 14, fontWeight: 600, color: '#007AFF', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>
+              Links & Quotes
+            </div>
+            <h2 style={{ fontSize: 44, fontWeight: 700, color: '#1d1d1f', letterSpacing: '-0.02em', marginBottom: 40 }}>
+              링크 & 인용 태그
+            </h2>
+          </div>
+
+          <div style={{ display: 'flex', gap: 48, flex: 1 }}>
+            {/* Code side */}
+            <div style={{ flex: 1 }}>
+              <div className="anim-item" style={animDelay(1)}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 12 }}>코드</div>
+                <div className="code-block" style={{ marginBottom: 24 }}>
+                  <span className="comment">{'<!-- 하이퍼링크 -->'}</span>{'\n'}
+                  <span className="tag">{'<a'}</span> <span className="attr">href</span>=<span className="str">"https://example.com"</span><span className="tag">{'>'}</span>{'\n'}
+                  {'  링크 텍스트'}{'\n'}
+                  <span className="tag">{'</a>'}</span>{'\n\n'}
+                  <span className="comment">{'<!-- 인용문 -->'}</span>{'\n'}
+                  <span className="tag">{'<blockquote>'}</span>{'\n'}
+                  {'  "좋은 디자인은 가능한 한 적게\n   디자인하는 것이다."'}{'\n'}
+                  <span className="tag">{'</blockquote>'}</span>{'\n\n'}
+                  <span className="comment">{'<!-- 수평선 -->'}</span>{'\n'}
+                  <span className="tag">{'<hr'}</span> <span className="tag">{'/>'}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Rendered side */}
+            <div style={{ flex: 1 }}>
+              <div className="anim-item" style={animDelay(2)}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 12 }}>결과</div>
+                <div style={{ background: '#F5F5F7', borderRadius: 14, padding: 32 }}>
+                  <div style={{ marginBottom: 32 }}>
+                    <div style={{ fontSize: 13, color: '#86868b', marginBottom: 8, fontWeight: 500 }}>&lt;a&gt; 하이퍼링크</div>
+                    <a href="#" style={{ color: '#007AFF', fontSize: 18, textDecoration: 'none', borderBottom: '1px solid #007AFF50' }}
+                       onClick={e => e.preventDefault()}>
+                      이것은 링크입니다 &#8594;
+                    </a>
+                  </div>
+
+                  <div style={{ marginBottom: 32 }}>
+                    <div style={{ fontSize: 13, color: '#86868b', marginBottom: 8, fontWeight: 500 }}>&lt;blockquote&gt; 인용문</div>
+                    <blockquote style={{
+                      borderLeft: '4px solid #007AFF',
+                      paddingLeft: 20,
+                      color: '#424245',
+                      fontSize: 18,
+                      fontStyle: 'italic',
+                      lineHeight: 1.6,
+                    }}>
+                      "좋은 디자인은 가능한 한 적게 디자인하는 것이다."
+                      <div style={{ fontSize: 14, color: '#86868b', marginTop: 8, fontStyle: 'normal', fontWeight: 500 }}>
+                        -- Dieter Rams
+                      </div>
+                    </blockquote>
+                  </div>
+
+                  <div>
+                    <div style={{ fontSize: 13, color: '#86868b', marginBottom: 12, fontWeight: 500 }}>&lt;hr&gt; 수평선</div>
+                    <hr style={{ border: 'none', height: 1, background: 'linear-gradient(90deg, transparent, #86868b, transparent)' }} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ========================================
+    // Slide 5 - List Tags
+    // ========================================
+    function ListSlide() {
+      return (
+        <div className="slide-bg">
+          <img src="images/slide5-lists.png" className="slide-bg-img" alt="" />
+          <div className="anim-item" style={animDelay(0)}>
+            <div style={{ fontSize: 14, fontWeight: 600, color: '#007AFF', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>
+              Lists
+            </div>
+            <h2 style={{ fontSize: 44, fontWeight: 700, color: '#1d1d1f', letterSpacing: '-0.02em', marginBottom: 36 }}>
+              리스트 태그
+            </h2>
+          </div>
+
+          <div style={{ display: 'flex', gap: 32, flex: 1 }}>
+            {/* UL */}
+            <div className="anim-item" style={{ ...animDelay(1), flex: 1 }}>
+              <div style={{ background: '#F5F5F7', borderRadius: 14, padding: 28, height: '100%' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+                  <span className="code-inline">&lt;ul&gt;</span>
+                  <span style={{ fontSize: 14, color: '#86868b', fontWeight: 500 }}>순서 없는 리스트</span>
+                </div>
+                <div className="code-block" style={{ fontSize: 13, marginBottom: 16 }}>
+                  <span className="tag">{'<ul>'}</span>{'\n'}
+                  {'  '}<span className="tag">{'<li>'}</span>HTML<span className="tag">{'</li>'}</span>{'\n'}
+                  {'  '}<span className="tag">{'<li>'}</span>CSS<span className="tag">{'</li>'}</span>{'\n'}
+                  {'  '}<span className="tag">{'<li>'}</span>JavaScript<span className="tag">{'</li>'}</span>{'\n'}
+                  <span className="tag">{'</ul>'}</span>
+                </div>
+                <div style={{ paddingLeft: 8 }}>
+                  <ul style={{ listStyle: 'none', padding: 0 }}>
+                    {['HTML', 'CSS', 'JavaScript'].map(item => (
+                      <li key={item} style={{ fontSize: 17, color: '#1d1d1f', padding: '6px 0', display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#007AFF', flexShrink: 0 }} />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* OL */}
+            <div className="anim-item" style={{ ...animDelay(2), flex: 1 }}>
+              <div style={{ background: '#F5F5F7', borderRadius: 14, padding: 28, height: '100%' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+                  <span className="code-inline">&lt;ol&gt;</span>
+                  <span style={{ fontSize: 14, color: '#86868b', fontWeight: 500 }}>순서 있는 리스트</span>
+                </div>
+                <div className="code-block" style={{ fontSize: 13, marginBottom: 16 }}>
+                  <span className="tag">{'<ol>'}</span>{'\n'}
+                  {'  '}<span className="tag">{'<li>'}</span>구조 잡기<span className="tag">{'</li>'}</span>{'\n'}
+                  {'  '}<span className="tag">{'<li>'}</span>스타일링<span className="tag">{'</li>'}</span>{'\n'}
+                  {'  '}<span className="tag">{'<li>'}</span>동작 추가<span className="tag">{'</li>'}</span>{'\n'}
+                  <span className="tag">{'</ol>'}</span>
+                </div>
+                <div style={{ paddingLeft: 8 }}>
+                  <ol style={{ listStyle: 'none', padding: 0, counterReset: 'item' }}>
+                    {['구조 잡기', '스타일링', '동작 추가'].map((item, i) => (
+                      <li key={item} style={{ fontSize: 17, color: '#1d1d1f', padding: '6px 0', display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <span style={{ width: 24, height: 24, borderRadius: '50%', background: '#007AFF', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 600, flexShrink: 0 }}>{i + 1}</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+            {/* DL */}
+            <div className="anim-item" style={{ ...animDelay(3), flex: 1 }}>
+              <div style={{ background: '#F5F5F7', borderRadius: 14, padding: 28, height: '100%' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+                  <span className="code-inline">&lt;dl&gt;</span>
+                  <span style={{ fontSize: 14, color: '#86868b', fontWeight: 500 }}>설명 리스트</span>
+                </div>
+                <div className="code-block" style={{ fontSize: 13, marginBottom: 16 }}>
+                  <span className="tag">{'<dl>'}</span>{'\n'}
+                  {'  '}<span className="tag">{'<dt>'}</span>HTML<span className="tag">{'</dt>'}</span>{'\n'}
+                  {'  '}<span className="tag">{'<dd>'}</span>구조<span className="tag">{'</dd>'}</span>{'\n'}
+                  {'  '}<span className="tag">{'<dt>'}</span>CSS<span className="tag">{'</dt>'}</span>{'\n'}
+                  {'  '}<span className="tag">{'<dd>'}</span>스타일<span className="tag">{'</dd>'}</span>{'\n'}
+                  <span className="tag">{'</dl>'}</span>
+                </div>
+                <div style={{ paddingLeft: 8 }}>
+                  {[['HTML', '웹 페이지의 구조'], ['CSS', '시각적 스타일링'], ['JS', '동적 동작 제어']].map(([term, desc]) => (
+                    <div key={term} style={{ marginBottom: 12 }}>
+                      <div style={{ fontSize: 17, fontWeight: 700, color: '#1d1d1f' }}>{term}</div>
+                      <div style={{ fontSize: 15, color: '#86868b', paddingLeft: 12, borderLeft: '2px solid #d2d2d7' }}>{desc}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ========================================
+    // Slide 6 - Table Tags
+    // ========================================
+    function TableSlide() {
+      return (
+        <div className="slide-bg">
+          <img src="images/slide6-table.png" className="slide-bg-img" alt="" />
+          <div className="anim-item" style={animDelay(0)}>
+            <div style={{ fontSize: 14, fontWeight: 600, color: '#007AFF', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>
+              Tables
+            </div>
+            <h2 style={{ fontSize: 44, fontWeight: 700, color: '#1d1d1f', letterSpacing: '-0.02em', marginBottom: 36 }}>
+              테이블 태그
+            </h2>
+          </div>
+
+          <div style={{ display: 'flex', gap: 48, flex: 1 }}>
+            <div className="anim-item" style={{ ...animDelay(1), flex: 1 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 12 }}>구조</div>
+              <div className="code-block" style={{ fontSize: 13 }}>
+                <span className="tag">{'<table>'}</span>{'\n'}
+                {'  '}<span className="tag">{'<thead>'}</span>{'\n'}
+                {'    '}<span className="tag">{'<tr>'}</span>{'\n'}
+                {'      '}<span className="tag">{'<th>'}</span>제목 셀<span className="tag">{'</th>'}</span>{'\n'}
+                {'      '}<span className="tag">{'<th>'}</span>제목 셀<span className="tag">{'</th>'}</span>{'\n'}
+                {'    '}<span className="tag">{'</tr>'}</span>{'\n'}
+                {'  '}<span className="tag">{'</thead>'}</span>{'\n'}
+                {'  '}<span className="tag">{'<tbody>'}</span>{'\n'}
+                {'    '}<span className="tag">{'<tr>'}</span>{'\n'}
+                {'      '}<span className="tag">{'<td>'}</span>데이터 셀<span className="tag">{'</td>'}</span>{'\n'}
+                {'      '}<span className="tag">{'<td>'}</span>데이터 셀<span className="tag">{'</td>'}</span>{'\n'}
+                {'    '}<span className="tag">{'</tr>'}</span>{'\n'}
+                {'  '}<span className="tag">{'</tbody>'}</span>{'\n'}
+                <span className="tag">{'</table>'}</span>
+              </div>
+
+              <div style={{ marginTop: 24 }}>
+                {[
+                  ['<table>', '테이블 컨테이너'],
+                  ['<thead> / <tbody>', '헤더 / 본문 그룹'],
+                  ['<tr>', '행 (Table Row)'],
+                  ['<th>', '제목 셀 (Table Header)'],
+                  ['<td>', '데이터 셀 (Table Data)'],
+                ].map(([tag, desc], i) => (
+                  <div key={tag} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
+                    <span className="code-inline" style={{ fontSize: 12 }}>{tag}</span>
+                    <span style={{ fontSize: 15, color: '#424245' }}>{desc}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="anim-item" style={{ ...animDelay(2), flex: 1 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 12 }}>렌더링 결과</div>
+              <div style={{ background: '#F5F5F7', borderRadius: 14, padding: 28 }}>
+                <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0, borderRadius: 10, overflow: 'hidden', boxShadow: '0 1px 8px rgba(0,0,0,0.06)' }}>
+                  <thead>
+                    <tr style={{ background: '#1d1d1f' }}>
+                      {['기술', '역할', '난이도'].map(h => (
+                        <th key={h} style={{ padding: '14px 20px', color: 'white', fontSize: 14, fontWeight: 600, textAlign: 'left' }}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      ['HTML', '구조 & 콘텐츠', '쉬움'],
+                      ['CSS', '스타일 & 레이아웃', '보통'],
+                      ['JavaScript', '동작 & 인터랙션', '보통'],
+                      ['React', 'UI 컴포넌트', '높음'],
+                    ].map(([tech, role, diff], i) => (
+                      <tr key={tech} style={{ background: i % 2 === 0 ? 'white' : '#FAFAFA' }}>
+                        <td style={{ padding: '12px 20px', fontSize: 15, fontWeight: 600, color: '#007AFF' }}>{tech}</td>
+                        <td style={{ padding: '12px 20px', fontSize: 15, color: '#424245' }}>{role}</td>
+                        <td style={{ padding: '12px 20px', fontSize: 15, color: '#424245' }}>
+                          <span style={{
+                            background: diff === '쉬움' ? '#30D15820' : diff === '보통' ? '#FF950020' : '#FF375F20',
+                            color: diff === '쉬움' ? '#248A3D' : diff === '보통' ? '#C93400' : '#D70015',
+                            padding: '3px 12px',
+                            borderRadius: 20,
+                            fontSize: 13,
+                            fontWeight: 600,
+                          }}>
+                            {diff}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ========================================
+    // Slide 7 - Form Tags (Interactive)
+    // ========================================
+    function FormSlide() {
+      const [formData, setFormData] = useState({ name: '', email: '', role: '', message: '', agree: false });
+      const [submitted, setSubmitted] = useState(false);
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        setSubmitted(true);
+        setTimeout(() => setSubmitted(false), 2000);
+      };
+
+      return (
+        <div className="slide-bg">
+          <img src="images/slide7-form.png" className="slide-bg-img" alt="" />
+          <div className="anim-item" style={animDelay(0)}>
+            <div style={{ fontSize: 14, fontWeight: 600, color: '#007AFF', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>
+              Forms
+            </div>
+            <h2 style={{ fontSize: 44, fontWeight: 700, color: '#1d1d1f', letterSpacing: '-0.02em', marginBottom: 36 }}>
+              폼 태그
+            </h2>
+          </div>
+
+          <div style={{ display: 'flex', gap: 48, flex: 1 }}>
+            {/* Tag reference */}
+            <div className="anim-item" style={{ ...animDelay(1), flex: '0 0 280px' }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 12 }}>주요 태그</div>
+              {[
+                ['<form>', '폼 컨테이너'],
+                ['<input>', '입력 필드'],
+                ['<select>', '드롭다운'],
+                ['<textarea>', '여러 줄 입력'],
+                ['<button>', '버튼'],
+                ['<label>', '라벨'],
+                ['<input checkbox>', '체크박스'],
+              ].map(([tag, desc]) => (
+                <div key={tag} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                  <span className="code-inline" style={{ fontSize: 11 }}>{tag}</span>
+                  <span style={{ fontSize: 14, color: '#424245' }}>{desc}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Interactive form */}
+            <div className="anim-item" style={{ ...animDelay(2), flex: 1 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 12 }}>라이브 데모</div>
+              <div style={{ background: '#F5F5F7', borderRadius: 14, padding: 28 }}>
+                {submitted ? (
+                  <div style={{ textAlign: 'center', padding: 40 }}>
+                    <div style={{ fontSize: 48, marginBottom: 12 }}>&#10003;</div>
+                    <div style={{ fontSize: 20, fontWeight: 600, color: '#30D158' }}>제출 완료!</div>
+                    <div style={{ fontSize: 14, color: '#86868b', marginTop: 8 }}>폼이 성공적으로 제출되었습니다.</div>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+                      <div>
+                        <label className="demo-label">이름 <span className="code-inline" style={{ fontSize: 10 }}>type="text"</span></label>
+                        <input className="demo-input" type="text" placeholder="홍길동"
+                          value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
+                      </div>
+                      <div>
+                        <label className="demo-label">이메일 <span className="code-inline" style={{ fontSize: 10 }}>type="email"</span></label>
+                        <input className="demo-input" type="email" placeholder="hello@example.com"
+                          value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
+                      </div>
+                    </div>
+                    <div style={{ marginBottom: 16 }}>
+                      <label className="demo-label">역할 <span className="code-inline" style={{ fontSize: 10 }}>&lt;select&gt;</span></label>
+                      <select className="demo-select" value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})}>
+                        <option value="">선택하세요</option>
+                        <option value="frontend">프론트엔드 개발자</option>
+                        <option value="backend">백엔드 개발자</option>
+                        <option value="designer">디자이너</option>
+                      </select>
+                    </div>
+                    <div style={{ marginBottom: 16 }}>
+                      <label className="demo-label">메시지 <span className="code-inline" style={{ fontSize: 10 }}>&lt;textarea&gt;</span></label>
+                      <textarea className="demo-textarea" rows={3} placeholder="자기소개를 입력하세요..."
+                        value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} />
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: '#424245', cursor: 'pointer' }}>
+                        <input type="checkbox" checked={formData.agree}
+                          onChange={e => setFormData({...formData, agree: e.target.checked})}
+                          style={{ width: 16, height: 16, accentColor: '#007AFF' }} />
+                        동의합니다 <span className="code-inline" style={{ fontSize: 10 }}>checkbox</span>
+                      </label>
+                      <button className="demo-btn" type="submit">제출하기</button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ========================================
+    // Slide 8 - Media & Code Tags
+    // ========================================
+    function MediaSlide() {
+      return (
+        <div className="slide-bg">
+          <img src="images/slide8-media.png" className="slide-bg-img" alt="" />
+          <div className="anim-item" style={animDelay(0)}>
+            <div style={{ fontSize: 14, fontWeight: 600, color: '#007AFF', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>
+              Media & Code
+            </div>
+            <h2 style={{ fontSize: 44, fontWeight: 700, color: '#1d1d1f', letterSpacing: '-0.02em', marginBottom: 36 }}>
+              미디어 & 코드 태그
+            </h2>
+          </div>
+
+          <div style={{ display: 'flex', gap: 48, flex: 1 }}>
+            {/* Image tag */}
+            <div className="anim-item" style={{ ...animDelay(1), flex: 1 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 12 }}>&lt;img&gt; 이미지 삽입</div>
+              <div className="code-block" style={{ fontSize: 13, marginBottom: 16 }}>
+                <span className="tag">{'<img'}</span>{'\n'}
+                {'  '}<span className="attr">src</span>=<span className="str">"photo.jpg"</span>{'\n'}
+                {'  '}<span className="attr">alt</span>=<span className="str">"설명 텍스트"</span>{'\n'}
+                {'  '}<span className="attr">width</span>=<span className="str">"400"</span>{'\n'}
+                <span className="tag">{'/>'}</span>
+              </div>
+              <div style={{ background: '#F5F5F7', borderRadius: 14, padding: 20, textAlign: 'center' }}>
+                <div style={{
+                  width: '100%', height: 160, borderRadius: 10,
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: 'white', fontSize: 16, fontWeight: 500
+                }}>
+                  <div>
+                    <div style={{ fontSize: 32, marginBottom: 4 }}>&#128247;</div>
+                    이미지 플레이스홀더
+                  </div>
+                </div>
+                <div style={{ fontSize: 13, color: '#86868b', marginTop: 8 }}>alt 속성으로 접근성을 확보하세요</div>
+              </div>
+            </div>
+
+            {/* Code tags */}
+            <div style={{ flex: 1 }}>
+              <div className="anim-item" style={animDelay(2)}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 12 }}>&lt;code&gt; 인라인 코드</div>
+                <div style={{ background: '#F5F5F7', borderRadius: 14, padding: 24, marginBottom: 24 }}>
+                  <p style={{ fontSize: 17, color: '#1d1d1f', lineHeight: 1.8 }}>
+                    JavaScript에서 변수를 선언할 때는 <span className="code-inline">const</span> 또는 <span className="code-inline">let</span>을 사용합니다.
+                    함수는 <span className="code-inline">function</span> 키워드로 정의합니다.
+                  </p>
+                </div>
+              </div>
+
+              <div className="anim-item" style={animDelay(3)}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 12 }}>&lt;pre&gt; + &lt;code&gt; 코드 블록</div>
+                <div className="code-block">
+                  <span className="comment">{'// JavaScript 예제'}</span>{'\n'}
+                  <span className="tag">function</span> <span className="prop">greet</span>(<span className="attr">name</span>) {'{'}{'\n'}
+                  {'  '}<span className="tag">return</span> <span className="str">{`\`안녕하세요, \${`}</span><span className="attr">name</span><span className="str">{`}님!\``}</span>;{'\n'}
+                  {'}'}{'\n\n'}
+                  <span className="tag">const</span> <span className="prop">message</span> = <span className="prop">greet</span>(<span className="str">"개발자"</span>);{'\n'}
+                  <span className="prop">console</span>.<span className="prop">log</span>(<span className="prop">message</span>);{'\n'}
+                  <span className="comment">{'// "안녕하세요, 개발자님!"'}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ========================================
+    // Slide 9 - CSS Basics
+    // ========================================
+    function CSSSlide() {
+      return (
+        <div className="slide-bg slide-scroll" style={{ overflowY: 'auto' }}>
+          <img src="images/slide9-css.png" className="slide-bg-img" alt="" />
+          <div className="anim-item" style={animDelay(0)}>
+            <div style={{ fontSize: 14, fontWeight: 600, color: '#007AFF', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>
+              Cascading Style Sheets
+            </div>
+            <h2 style={{ fontSize: 44, fontWeight: 700, color: '#1d1d1f', letterSpacing: '-0.02em', marginBottom: 32 }}>
+              CSS 스타일링 기초
+            </h2>
+          </div>
+
+          <div style={{ display: 'flex', gap: 36, flex: 1 }}>
+            {/* Left column */}
+            <div style={{ flex: 1 }}>
+              {/* Selectors */}
+              <div className="anim-item" style={animDelay(1)}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>선택자 종류</div>
+                <div className="code-block" style={{ fontSize: 13, marginBottom: 20 }}>
+                  <span className="comment">{'/* 태그 선택자 */'}</span>{'\n'}
+                  <span className="tag">p</span> {'{ '}<span className="prop">color</span>: <span className="str">blue</span>; {'}'}{'\n\n'}
+                  <span className="comment">{'/* 클래스 선택자 */'}</span>{'\n'}
+                  <span className="val">.title</span> {'{ '}<span className="prop">font-size</span>: <span className="str">24px</span>; {'}'}{'\n\n'}
+                  <span className="comment">{'/* ID 선택자 */'}</span>{'\n'}
+                  <span className="attr">#header</span> {'{ '}<span className="prop">background</span>: <span className="str">#fff</span>; {'}'}
+                </div>
+              </div>
+
+              {/* Key properties */}
+              <div className="anim-item" style={animDelay(2)}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>주요 속성</div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                  {[
+                    ['color', '텍스트 색상', '#FF375F'],
+                    ['background', '배경', '#FF9500'],
+                    ['padding', '안쪽 여백', '#30D158'],
+                    ['margin', '바깥 여백', '#5856D6'],
+                    ['border', '테두리', '#007AFF'],
+                    ['font-size', '글자 크기', '#FF2D55'],
+                    ['border-radius', '둥근 모서리', '#AF52DE'],
+                    ['box-shadow', '그림자', '#636366'],
+                  ].map(([prop, desc, color]) => (
+                    <div key={prop} style={{ background: '#F5F5F7', borderRadius: 8, padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ width: 8, height: 8, borderRadius: 2, background: color, flexShrink: 0 }} />
+                      <div>
+                        <div style={{ fontFamily: "'SF Mono', monospace", fontSize: 12, fontWeight: 600, color: '#1d1d1f' }}>{prop}</div>
+                        <div style={{ fontSize: 11, color: '#86868b' }}>{desc}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Right column - Box Model */}
+            <div className="anim-item" style={{ ...animDelay(3), flex: 1 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>Box Model</div>
+              <div style={{ background: '#F5F5F7', borderRadius: 14, padding: 28 }}>
+                <div className="box-model-margin">
+                  <div style={{ fontSize: 11, fontWeight: 600, color: '#6C5900', marginBottom: 6 }}>margin (바깥 여백)</div>
+                  <div className="box-model-border">
+                    <div style={{ fontSize: 11, fontWeight: 600, color: '#0047AB', marginBottom: 6 }}>border (테두리)</div>
+                    <div className="box-model-padding">
+                      <div style={{ fontSize: 11, fontWeight: 600, color: '#4A148C', marginBottom: 6 }}>padding (안쪽 여백)</div>
+                      <div className="box-model-content">
+                        <div style={{ fontSize: 14, color: '#00695C' }}>content</div>
+                        <div style={{ fontSize: 11, color: '#00695C' }}>(실제 콘텐츠)</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ marginTop: 20 }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>CSS의 역할</div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                  {[
+                    ['&#127912;', '색상', '텍스트, 배경, 테두리 색상 지정'],
+                    ['&#9638;', '레이아웃', '요소 배치와 정렬'],
+                    ['&#65;a', '타이포그래피', '글꼴, 크기, 두께 조절'],
+                    ['&#8596;', '간격', '여백과 패딩 제어'],
+                  ].map(([icon, title, desc]) => (
+                    <div key={title} style={{ background: 'white', borderRadius: 10, padding: 14, boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: '#1d1d1f', marginBottom: 4 }}>{title}</div>
+                      <div style={{ fontSize: 12, color: '#86868b', lineHeight: 1.4 }}>{desc}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ========================================
+    // Slide 10 - Closing
+    // ========================================
+    function ClosingSlide() {
+      return (
+        <div className="slide-bg" style={{ justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+          <img src="images/slide10-end.png" className="slide-bg-img" alt="" />
+          <div>
+            <div className="anim-item" style={animDelay(0)}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: '#007AFF', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 16 }}>
+                Summary
+              </div>
+              <h2 style={{ fontSize: 52, fontWeight: 700, color: '#1d1d1f', letterSpacing: '-0.02em', marginBottom: 48 }}>
+                핵심 요약
+              </h2>
+            </div>
+
+            <div className="anim-item" style={animDelay(1)}>
+              <div style={{ display: 'flex', gap: 24, justifyContent: 'center', marginBottom: 56 }}>
+                {[
+                  ['HTML', '구조', '웹 페이지의 뼈대를\n만듭니다', '#007AFF', '{ }'],
+                  ['CSS', '스타일', '시각적으로 아름답게\n꾸며줍니다', '#AF52DE', '# { }'],
+                  ['JavaScript', '동작', '인터랙션과 동적\n기능을 추가합니다', '#FF9500', 'f( )'],
+                ].map(([title, sub, desc, color, icon]) => (
+                  <div key={title} style={{
+                    background: '#F5F5F7',
+                    borderRadius: 20,
+                    padding: '36px 32px',
+                    width: 220,
+                    textAlign: 'center',
+                    transition: 'transform 0.2s, box-shadow 0.2s',
+                    cursor: 'default',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(0,0,0,0.08)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+                  >
+                    <div style={{
+                      width: 56, height: 56, borderRadius: 16,
+                      background: `${color}15`,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      margin: '0 auto 16px',
+                      fontFamily: "'SF Mono', monospace",
+                      fontSize: 16, fontWeight: 700, color,
+                    }}>
+                      {icon}
+                    </div>
+                    <div style={{ fontSize: 22, fontWeight: 700, color: '#1d1d1f', marginBottom: 4 }}>{title}</div>
+                    <div style={{ fontSize: 16, fontWeight: 600, color, marginBottom: 12 }}>= {sub}</div>
+                    <div style={{ fontSize: 14, color: '#86868b', lineHeight: 1.5, whiteSpace: 'pre-line' }}>{desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="anim-item" style={animDelay(2)}>
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 12,
+                background: 'linear-gradient(135deg, #007AFF10, #5856D610)',
+                borderRadius: 16,
+                padding: '16px 32px',
+              }}>
+                <span style={{ fontSize: 16, color: '#86868b' }}>다음 단계</span>
+                <span style={{ fontSize: 20, color: '#007AFF' }}>&#8594;</span>
+                <span style={{ fontSize: 18, fontWeight: 700, color: '#1d1d1f' }}>JavaScript & React</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ========================================
+    // App Component
+    // ========================================
+    function App() {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [prevSlide, setPrevSlide] = useState(-1);
+      const [showOverview, setShowOverview] = useState(false);
+      const touchStartX = useRef(0);
+      const touchStartY = useRef(0);
+
+      const slides = [
+        { component: TitleSlide, title: 'HTML & CSS 기초' },
+        { component: SemanticSlide, title: '시맨틱 태그' },
+        { component: TextTagsSlide, title: '텍스트 태그' },
+        { component: LinksSlide, title: '링크 & 인용' },
+        { component: ListSlide, title: '리스트 태그' },
+        { component: TableSlide, title: '테이블 태그' },
+        { component: FormSlide, title: '폼 태그' },
+        { component: MediaSlide, title: '미디어 & 코드' },
+        { component: CSSSlide, title: 'CSS 기초' },
+        { component: ClosingSlide, title: '마무리' },
+      ];
+
+      const totalSlides = slides.length;
+
+      const goTo = useCallback((index) => {
+        if (index >= 0 && index < totalSlides && index !== currentSlide) {
+          setPrevSlide(currentSlide);
+          setCurrentSlide(index);
+        }
+      }, [currentSlide, totalSlides]);
+
+      const next = useCallback(() => goTo(currentSlide + 1), [currentSlide, goTo]);
+      const prev = useCallback(() => goTo(currentSlide - 1), [currentSlide, goTo]);
+
+      // Keyboard navigation
+      useEffect(() => {
+        const handleKey = (e) => {
+          if (showOverview && e.key === 'Escape') {
+            setShowOverview(false);
+            return;
+          }
+
+          switch (e.key) {
+            case 'ArrowRight':
+            case 'ArrowDown':
+            case ' ':
+            case 'Enter':
+              e.preventDefault();
+              next();
+              break;
+            case 'ArrowLeft':
+            case 'ArrowUp':
+              e.preventDefault();
+              prev();
+              break;
+            case 'Escape':
+              setShowOverview(v => !v);
+              break;
+            case 'f':
+            case 'F':
+              if (!e.metaKey && !e.ctrlKey) {
+                if (document.fullscreenElement) {
+                  document.exitFullscreen();
+                } else {
+                  document.documentElement.requestFullscreen();
+                }
+              }
+              break;
+            case '1': case '2': case '3': case '4': case '5':
+            case '6': case '7': case '8': case '9':
+              goTo(parseInt(e.key) - 1);
+              break;
+            case '0':
+              goTo(9);
+              break;
+          }
+        };
+
+        window.addEventListener('keydown', handleKey);
+        return () => window.removeEventListener('keydown', handleKey);
+      }, [next, prev, goTo, showOverview]);
+
+      // Touch/swipe support
+      useEffect(() => {
+        const handleTouchStart = (e) => {
+          touchStartX.current = e.touches[0].clientX;
+          touchStartY.current = e.touches[0].clientY;
+        };
+        const handleTouchEnd = (e) => {
+          const dx = e.changedTouches[0].clientX - touchStartX.current;
+          const dy = e.changedTouches[0].clientY - touchStartY.current;
+          if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 60) {
+            if (dx < 0) next();
+            else prev();
+          }
+        };
+        window.addEventListener('touchstart', handleTouchStart, { passive: true });
+        window.addEventListener('touchend', handleTouchEnd, { passive: true });
+        return () => {
+          window.removeEventListener('touchstart', handleTouchStart);
+          window.removeEventListener('touchend', handleTouchEnd);
+        };
+      }, [next, prev]);
+
+      const progressWidth = ((currentSlide + 1) / totalSlides) * 100;
+
+      return (
+        <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', background: '#F5F5F7' }}>
+          {/* Progress bar */}
+          <div className="progress-bar" style={{ width: `${progressWidth}%` }} />
+
+          {/* Slides */}
+          {slides.map((slide, index) => {
+            const SlideComponent = slide.component;
+            let className = 'slide-container';
+            if (index === currentSlide) className += ' active';
+            else if (index === prevSlide) className += ' prev';
+            return (
+              <div key={index} className={className}>
+                <SlideComponent />
+              </div>
+            );
+          })}
+
+          {/* Bottom navigation */}
+          <div style={{
+            position: 'fixed',
+            bottom: 24,
+            left: 0,
+            right: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 20,
+            zIndex: 50,
+          }}>
+            {/* Slide counter */}
+            <div style={{
+              position: 'absolute',
+              right: 40,
+              fontSize: 14,
+              fontWeight: 500,
+              color: '#86868b',
+              fontVariantNumeric: 'tabular-nums',
+            }}>
+              {currentSlide + 1} / {totalSlides}
+            </div>
+
+            {/* Navigation dots */}
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+              {slides.map((_, i) => (
+                <div
+                  key={i}
+                  className={`nav-dot ${i === currentSlide ? 'active' : ''}`}
+                  onClick={() => goTo(i)}
+                  title={slides[i].title}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Overview grid */}
+          <div className={`overview-grid ${showOverview ? 'open' : ''}`} onClick={() => setShowOverview(false)}>
+            {slides.map((slide, i) => (
+              <div
+                key={i}
+                className={`overview-thumb ${i === currentSlide ? 'active' : ''}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  goTo(i);
+                  setShowOverview(false);
+                }}
+              >
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: 11, fontWeight: 600, color: '#86868b', marginBottom: 4 }}>
+                    {i + 1}
+                  </div>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: '#1d1d1f' }}>
+                    {slide.title}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Keyboard hint */}
+          <div style={{
+            position: 'fixed',
+            bottom: 24,
+            left: 40,
+            fontSize: 12,
+            color: '#c7c7cc',
+            display: 'flex',
+            gap: 8,
+            alignItems: 'center',
+            zIndex: 50,
+          }}>
+            <span style={{ background: '#e5e5e7', borderRadius: 4, padding: '2px 6px', fontSize: 11, color: '#86868b' }}>ESC</span>
+            <span>Overview</span>
+            <span style={{ background: '#e5e5e7', borderRadius: 4, padding: '2px 6px', fontSize: 11, color: '#86868b' }}>F</span>
+            <span>Fullscreen</span>
+          </div>
+        </div>
+      );
+    }
+
+    // ========================================
+    // Rendering
+    // ========================================
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
